@@ -1,0 +1,34 @@
+{
+  "name": "anki-mcp-server",
+  "version": "1.1.0",
+  "description": "MCP server for Anki via the AnkiConnect add-on: notes, decks, models, and review/performance stats",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "anki-mcp-server": "dist/index.js"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "postbuild": "chmod +x dist/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.22.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "private": true,
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

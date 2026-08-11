@@ -1,0 +1,313 @@
+# Step 3 — Cards
+
+_Write the cards from the plan and insert them into Anki. Also runs alone, against live cards, to repair a deck._
+
+# What a card is
+
+A card makes the student **produce a key term from memory, inside a complete, true sentence.**
+That term is the blank. Everything below serves that.
+
+Check the sentence against that line before checking it against anything else. A card can parse,
+carry every tag correctly, satisfy every rule below, and still fail it — that is the *common*
+failure, not a rare one. Ask: is this sentence true standing alone, and is the blank a term worth
+producing?
+
+# The seven cards that define the style
+
+These are the whole style guide. Where a written rule below and these cards disagree, **the cards
+win.** Put your draft beside the one with the same shape — pulled up, not from memory.
+
+They are canonical, so keep them correct: if one of them is wrong, fix it here rather than working
+around it. *ref-05 once read "'plate' visible and not bolded", which is the opposite of the rule
+below, and 24 cards were written to match it before anyone compared the two.* And whenever you
+build a check of any kind, **run these seven through it first** — they are the regression test. A
+check that fails ref-06 or ref-07 has not understood recognition cards; a check that passes a card
+these seven would reject is not checking the right thing.
+
+```
+ref-01  {{c1::<b>Osteoid</b>::what?}} is {{c2::<i>unmineralized bone matrix</i>::what is it?}}
+
+ref-02  {{c1::<b>Osteoclasts</b>::which cells?}} <u>function</u> to {{c2::<i>resorb bone matrix</i>::do what?}}
+
+ref-03  {{c1::<b>Calcitonin</b>::which hormone?}} acts on bone to {{c2::<u>lower</u>::raise or lower?}} {{c3::<i>blood calcium levels</i>::which levels?}}
+
+ref-04  {{c1::<b>Connective tissue</b>::which tissue?}} is <u>classified</u> into {{c2::<i>embryonic, proper, and specialized types</i>::which three classes?}}
+
+ref-05  The {{c1::<b>epiphyseal growth</b>::which?}} <b>plate</b> has five <u>zones</u>:<br><br>1. {{c2::<i>resting cartilage</i>::which?}}<br>2. {{c2::<i>proliferating cartilage</i>}}<br>3. {{c2::<i>hypertrophic cartilage</i>}}<br>4. {{c2::<i>calcified cartilage</i>}}<br>5. {{c2::<i>ossification</i>}}
+
+ref-06  {{c1::<img src="slide.jpg">}}<br><br>This is {{c2::<i>compact bone</i>::which tissue?}}
+
+ref-07  <img src="slide.jpg"><br><br>This is {{c1::<i>compact bone</i>::which tissue?}}
+```
+
+**ref-01** subject + answer, the workhorse. **ref-02** a *visible* facet. **ref-03** an either/or
+choice wears `<u>`, the value wears `<i>`. **ref-04** an inline set is **one** answer — the three
+classes are recalled together, so they share a cloze instead of becoming three cards.
+**ref-05** a list — numbers **outside** the braces and unstyled, one item per line, every item on
+**one** cloze number, and hint on item 1 only. The whole subject — "epiphyseal growth plate" —
+is bolded &mdash; in two `<b>` runs, because a cloze boundary cuts through it; only "epiphyseal
+growth" is clozed, so "plate" stays visible to make the hint read. **ref-06** a
+recognition card — the picture is a cloze with **no hint** and there is **no `<b>` at all**.
+**ref-07** the same card with the picture **not** clozed, so it makes one card instead of two.
+
+**ref-06 or ref-07 is a real choice, and it turns on whether the reverse card is worth answering.**
+For a whole deck the plan has already made it — read it off the top of `plan.md` rather than
+deciding again here, or half the deck ends up in the other shape.
+Clozing the picture asks it both ways: name the tissue from the image, *and* produce the image from
+the description. The second direction is worth having when the image is the one thing the deck is
+teaching — a diagram, a named appearance, a single canonical picture. It is waste when the deck is a
+**slide practical**, where dozens of different fields all answer "hyaline cartilage": nobody can
+produce a particular field of view from "This is hyaline cartilage", and each note
+would double its cards for a question the exam never asks. **A whole deck of one-image-one-answer
+identification takes ref-07.** *A first pass at a 6-week histology practical built 37 cards on
+ref-06 and had to be rewritten to 21 on ref-07.*
+
+Where the identified thing is not a tissue, the hint follows it — `which cell?` on a blood smear —
+but it stays **the same on every card in that deck**, or the odd hint tells you the answer is the
+odd one out.
+
+**And read what they have in common:** every subject is a **specific named entity** — Osteoid,
+Osteoclasts, Calcitonin, the epiphyseal growth plate — and each card states **one property of it**.
+Not one has a topic heading in the subject slot. Reading these seven for their markup and not for
+that is how a deck ends up with the same subject on three-quarters of its cards.
+
+# From plan to card
+
+`ENTITY → <b>` · `ASPECT → <u>` · `VALUE → <i>`
+
+- `<i>` on every card; `<b>` on every card but an image card. **One subject, never two** —
+  which is not the same as one `<b>` tag; see the nesting rule below.
+- Left to right the roles run **`<b>` → `<u>` → `<i>`**, and the card **ends on its answer**.
+- **The subject opens the sentence**, behind at most an article. A clause in front of it means
+  either a facet standing in the wrong place — "In cross section, `<b>`skeletal muscle`</b>` fibers
+  appear polygonal" wants to be "`<b>`Skeletal muscle`</b>` fibers in `<u>`cross section`</u>`
+  appear polygonal" — or filler to cut.
+- **The whole subject is bolded; only the key identifier is clozed.** That is the rule about
+  *what*. The rule about *how* is separate, and getting it wrong silently breaks the card:
+
+  **A role tag must sit directly on the text it styles — never wrap a cloze.** Anki renders a
+  revealed cloze as its own `<span class="cloze">`, and that span sets colour on itself, so a
+  colour merely *inherited* from an enclosing `<b>` is overridden and the role is lost on screen.
+  A subject that a cloze boundary cuts through therefore takes **two `<b>` runs**, one inside the
+  braces and one outside. It is still one subject.
+
+  ```
+  The {{c1::<b>A</b>::which?}} <b>band</b> is {{c2::<i>dark</i>::dark or light?}}
+  {{c1::<b>Type IIb</b>::which?}} <b>muscle fibers</b> have the {{c2::<u>fewest</u>::most or fewest?}} {{c3::<i>mitochondria</i>::which organelle?}}
+  The {{c1::<b>sarcomere</b>::which unit?}} is the {{c2::<i>functional unit of contraction</i>::what is it?}}
+  ```
+
+  *Written as `<b>{{c1::A::which?}} band</b>` it reads correctly in the source and renders wrong:
+  148 of 172 cards shipped with the subject showing in the cloze colour instead of the subject
+  colour. Nothing in the markup looks amiss — only the rendered card shows it.*
+
+  "muscle fibers" and "band" are part of the subject's name, so they are **inside the bold**; they
+  are not what distinguishes it, so they are **outside the cloze**. Where the subject is a single
+  term the bold and the cloze coincide. *Getting these two nested the wrong way round — cloze
+  outside, bold inside — is what produced `<b>A band</b>` blanked whole and `{{Type IIb}} muscle
+  fibers` with the name broken in half.*
+- Nothing unstyled goes inside the braces. An article belonging to the *sentence* stays outside;
+  one belonging to the *answer phrase* travels with it. (An `<img>` is the one thing in a cloze
+  wearing no role tag — ref-06.)
+- **No possessives.** With the right entity there is nothing to possess, only to describe, so an
+  apostrophe-s (or a "whose") means step 2 handed you the wrong entity — go back rather than patch.
+- Assert only what the source states. No added qualifier, no inference, no invented comparison.
+
+# Which spans get clozed
+
+- **The subject is clozed. That is the default, not a call you make fresh on every card.** All five
+  of the reference cards that have a subject cloze it, and across a finished deck it should run
+  somewhere near nine in ten. A card asks two questions, forward and backward, and **the backward
+  one does not exist unless the subject is blank** — a term nobody is ever asked to produce is a
+  term the deck does not teach. Leaving it visible is not an easier card; it is half a card.
+- **So a visible subject is the exception, and it owes an argument out loud: name two other terms
+  that answer the reverse question.** If you cannot name two, the reverse discriminates and the
+  subject gets clozed. Nine in ten is a prior, not a quota — it tells you which of the two choices
+  has to be defended, and you still defend it card by card. *A 172-card deck left 22 subjects
+  visible and about 9 of them were wrong — "what bundles 10 to 100 muscle fibers?" and "which
+  muscle is identified by branching, intercalated discs and single nuclei?" each have exactly one
+  answer. Those cards were written against ref-04, which for a long time left a discriminating subject
+  visible and taught the wrong default to everything measured against it.* Unwritten, the test gets
+  felt rather than run, and it is always felt in the same direction.
+- **Cloze the whole value**, never a fragment with the explanation left as prose. *"…because the
+  thin and thick filaments never form {{sarcomeres}}" is a 1-word answer with 11 words of
+  explanation visible. The seven leave scaffolding visible, never explanation.*
+- **When the card asks what something DOES, the verb is part of the answer.** `<u>` marks an
+  *aspect* — function, location, section plane. Ask which
+  question the card is really putting: if it is "what does X do?", the verb is inside the braces;
+  if it is "what / where / how much?", the verb is only scaffolding and stays visible.
+
+  ```
+  {{c1::<b>Tropomodulin</b>::which protein?}} <u>caps</u> {{c2::<i>the free end of the actin filament</i>::which end?}}
+  {{c1::<b>Tropomodulin</b>::which protein?}} {{c2::<i>caps the free end of the actin filament</i>::does what?}}
+  ```
+
+  The first asks for a location and never asks what the protein is for. The second is the card.
+  "The <b>A band</b> <u>contains</u> …" is fine by the same test — *contains* is not the fact.
+- **A bounded value is one answer.** "between A and B", "from X to Y", "A to B" — blanking only the
+  far end hands over half the fact. *"lie between the sarcolemma and {{the basal lamina}}" was
+  written two cards after "{{Z line to Z line}}" was written correctly.*
+- **The hint must be the question you meant to ask.** If you are writing a hint to fit a blank you
+  already chose, you clozed by word-type instead of by answer — technical nouns *look* like answers
+  and the eye lands on them.
+- Cloze the facet only when it is a **value to produce**: ref-03 clozes `lower` because *raise or
+  lower* is the recall; ref-02 leaves `function` visible because it only names the aspect. An
+  either/or is ref-03 **only when a separate value survives it** — otherwise mark the aspect noun
+  `<u>` and let the either/or be the `<i>` answer.
+- **In a parallel set, the term that differs between the cards is a value to produce — cloze it.**
+  That contrast is the whole reason the set exists. *Two cards read "Mitochondria in `<u>`skeletal`</u>`
+  muscle make up 2%" and "…`<u>`cardiac`</u>`… 40%", with the muscle type visible on both — so neither
+  card ever asked skeletal-or-cardiac, the one thing the pair was built to teach.*
+- One to three cloze numbers. Never four.
+- **Every miss above leans the same way: less clozed.** Leaving the subject visible, leaving the
+  verb outside, blanking the shorter of two spans — each is the cheaper choice while writing and
+  the easier card to answer, and none of them breaks a rule a checker can see. When a judgment call
+  about a span feels balanced, it is not: you are standing on the slope. Cloze it.
+
+# Hints
+
+- **Hint every cloze, except an image cloze and list items that share a number** (they inherit
+  item 1's). Those two carve-outs are the whole exception list.
+- Questions ending in `?`, one to three words, no commas, reading as natural English substituted
+  into the blank.
+- **The hint supplies exactly what the visible sentence does not, and fluency is the test.** Read
+  the sentence with the blank in place; if it does not read as English, the hint is wrong.
+  `The {{c1::<b>A</b>::which band?}} <b>band</b>` gives *"the [which band?] band is dark"* — the
+  noun is said twice. Because "band" is already visible, the hint is simply `which?`.
+- Where the visible sentence already pins the kind of thing being named — a definition, or a frame
+  only one kind of thing fits — a bare `what?` is fine and often best —
+  `A {{c1::<b>muscle fascicle</b>::what?}} bundles skeletal muscle fibers…` reads cleanly. Where
+  nothing names it, the hint must: `{{c1::<b>sarcolemma</b>::which membrane?}}`. **A hint that asks
+  for nothing at all is not a hint** — `what else?` is the clearest failure. Otherwise a hint names the category (`which organelle?`),
+  prompts an action (`do what?`), offers an either/or (`raise or lower?`), asks for a definition
+  (`what is it?`), or asks a cause (`why?`, whose answer is a whole clause). A two-option hint is
+  *not* a leak; it makes recall fast.
+- **Hide each cloze in turn.** Nothing visible — including the sibling answers — may give it away.
+
+# Working
+
+**Building a deck: start from `<folder>/plan.md`, with `inventory.md` open beside it** — the plan
+says what each card is about, the inventory holds the verbatim quote and the slide image that
+`Extra` needs. Starting from the plan alone leaves every `Extra` empty.
+
+The plan carries the deck name, the planned cards as `ENTITY | ASPECT | VALUE | source`, the
+ref-06/ref-07 decision if the deck is a recognition deck, the cuts under `## Cut`, and the
+`## Carried to handover` section. If `plan.md` is not there, the planning step has not run: go back
+to **[step 2 — organize](2-organize.md)** rather than planning inline. Deciding what a card is
+*about* while a sentence is in front of you is the failure the split exists to prevent.
+
+**Repairing cards already in Anki: there is no `plan.md`, and there should not be one.** That gate
+is for building. Here the live cards are the input — read them from Anki, fix them against the seven,
+and re-read a card's current text before editing it. The plan-to-cards check below does not apply,
+and neither does the handover report; you owe the user the list of what you changed and why.
+
+**Draft 10–15 cards per pass and re-read the seven at the start of every pass.** Not from memory:
+pull them up. Quality does not decay gently inside a long response, it collapses, because after the
+first pass your nearest exemplar stops being ref-01 and becomes **your own previous card** — so
+errors inherit instead of scattering. *One 228-card sitting used the facet role in half the cards in
+its first block of 20 and in none at all by the seventh, with the exemplars in context throughout.*
+
+**There is no target ratio**, with one exception — the clozed subject above — and even that is a
+floor rather than a quota: a deck that comes in well under it is wrong, a deck at ten in ten is not.
+Never manufacture a distribution. Otherwise judge every card against the seven and the rules, and if a
+whole block skips a role entirely, go and look at those cards — the finding is in the cards, never
+in a percentage.
+
+A review reports; fixing is a separate pass that gets reviewed again. A flag sends you back to the
+source, not to the markup.
+
+# Anki
+
+**Create the note type before you write anything.** A stock Anki does not have `Custom Cloze`, and
+every insert fails at the end of the session with `model was not found`. One command, once:
+`curl -s localhost:8765 -d @anki/custom-cloze.json` — see [`anki/README.md`](../anki/README.md).
+
+Note type `Custom Cloze`; fields `Text` (the card), `Extra` (slide image + verbatim `Source:`
+quote), `Source` (e.g. "Slide 12"). Deck by lecture, `<Course>::Test N::<Subject>::<Lecture>` —
+**the folder says `Exam`, the deck says `Test`**; check `anki_find_notes` for the existing deck
+before creating a sibling. Tag every card `<course>::<subject>::<topic>`, `test::N`,
+`slide::<slug>-NN` — the slug is a short name for the *slide deck* the card came from
+(`ct-14`, `bone-03`), and is required because two slide decks in one folder both number from 1.
+Slide images go into `collection.media` as `<course>-<slug>-slide-NN.jpg`. The `tools/` scripts
+emit their own working names; rename on the way in, when you `storeMediaFile`.
+
+**On a recognition card the image goes in `Text`, not `Extra`.** `Extra` renders on the back only,
+so an image parked there is invisible exactly when it is the question. On ref-06 it is inside the
+`c1` cloze; on ref-07 it sits ahead of the sentence, unclozed. What `Extra` carries instead is
+everything that would **leak the answer** if it were on the front — organ, stain, magnification —
+plus the `Source:` quote and a link back to the slide.
+
+A practical spans the whole course rather than one lecture, so it gets its own tree,
+`<Course>::Lab Practical::<Tissue>`, tagged `lab-practical`. Media as
+`<course>-labprac-<topic>-NN-<slug>.jpg`.
+
+Re-read a live card's current text from Anki before editing it.
+
+**Getting the notes in.** `anki_find_notes` and `anki_add_notes` above are the MCP server in this
+repo. It is a convenience, not a requirement: it wraps [AnkiConnect](https://foosoft.net/projects/anki-connect/),
+which is a plain HTTP endpoint on `localhost:8765`. Anything that can POST JSON can insert cards —
+an agent without MCP, a shell script, or you.
+
+**Create the deck first.** AnkiConnect will not do it for you — `addNotes` fails the whole
+batch with `deck was not found`, and on a fresh collection every deck is new:
+
+```bash
+curl -s localhost:8765 -d '{"action":"createDeck","version":6,
+  "params":{"deck":"<Course>::Test 2::Histology::Bone"}}'
+```
+
+```bash
+curl -s localhost:8765 -d '{"action":"addNotes","version":6,"params":{"notes":[
+  {"deckName":"<Course>::Test 2::Histology::Bone","modelName":"Custom Cloze",
+   "fields":{"Text":"…","Extra":"…","Source":"Notes"},
+   "tags":["<course>::histology::bone","test::2"]}]}}'
+```
+
+`addNotes` returns an array of note IDs, index-aligned with the input; a `null` means that note
+failed, most often as a duplicate. Other actions worth knowing: `findNotes`, `notesInfo`,
+`updateNoteFields`, `createDeck`, `storeMediaFile`.
+
+**Stage the images before inserting**, or the cards render blank and `tools/check_deck.py` fails
+every one of them:
+
+```bash
+curl -s localhost:8765 -d '{"action":"storeMediaFile","version":6,
+  "params":{"filename":"<course>-<slug>-slide-01.jpg","path":"/abs/path/to/slide.jpg"}}'
+```
+
+# Handover
+
+**Check the plan back against the cards first.** Every line in `plan.md` that was not cut must have
+a card. Steps 1 and 2 each read their sources back against their own output; this is that same
+check for the last hop, and without it a planned card that never got written is invisible — nothing
+downstream notices a card that does not exist.
+
+**Then check every subject, card by card.** Confirm each subject has its key identifier inside a
+cloze. A subject split across two `<b>` runs (ref-05) counts as clozed — check the clozed run, not
+each `<b>`. For
+every one that does not, write the two other terms that answer its reverse question into the
+handover — a visible subject with nothing named beside it is a defect, not a decision, and it goes
+back for fixing. This is its own pass rather than something to trust from the writing pass, because
+while a sentence is in front of you the reverse test gets felt rather than run, and it is always
+felt in the same direction. If the visible subjects come to much more than one card in ten, do not
+audit them one at a time — the default slipped, and the block gets rewritten.
+
+Then write the deck to **`<folder>/deck.json`** — the `anki_add_notes` payload itself, deck name,
+model, fields and tags — so an interrupted session can be resumed and inserted without rebuilding
+it.
+
+**Then show the user the cards, not the payload.** Nobody reviews a deck by reading JSON. Render
+every card as it will appear, in lecture order, with the three roles visually distinct and each
+card's source quote beneath it, and render it to an HTML file in the lecture folder, then open it. Give it a way to show the *faces*
+as well as the answers — the fluency test in Hints can only be run against the front of the card,
+and that is the pass that catches a hint the sentence will not read with.
+
+With it, **report `plan.md`'s `## Carried to handover` section in full — unprompted, once.** Every
+item in it exists because something was decided on the user's behalf: a term overruled, an
+objective nothing answered, a source conflict resolved, a fact cut. A decision like that is
+reported at handover, not left in a note field or a file for them to find.
+
+Report the section as it stands; do not keep a list here of what it should contain. Upstream owns
+what goes in, this step owns that it arrives — that separation is why nothing falls between them.
+
+Insert with `anki_add_notes` once they say go.

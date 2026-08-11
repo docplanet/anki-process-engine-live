@@ -1,0 +1,96 @@
+# ════════════════════════════════════════════════════════════════════════════════
+#  PUBLIC REPO — WHITELIST. Ignore EVERYTHING by default, then explicitly allow
+#  ONLY the engine: the method docs, the tools, and the MCP server.
+#
+#  Course material does not live in this tree any more. `coursework` is a symlink
+#  to a folder outside the repo, so textbooks, recordings, notes, slides and
+#  built decks cannot be committed even by accident.
+# ════════════════════════════════════════════════════════════════════════════════
+
+# 1) ignore everything at the root
+/*
+
+# 2) allow root-level engine files + the directories we need to descend into
+!/.gitignore
+!/README.md
+!/AGENTS.md
+!/LICENSE
+!/SETUP.md
+!/method/
+!/anki/
+!/tools/
+!/.claude/
+!/anki-mcp-server/
+
+# 3) .claude/  →  ONLY the card-authoring skills, named one by one so a future
+#    skill has to be added here deliberately rather than publishing itself.
+/.claude/*
+!/.claude/skills/
+/.claude/skills/*
+!/.claude/skills/anki-extract/
+!/.claude/skills/anki-organize/
+!/.claude/skills/anki-cards/
+/.claude/skills/*/*
+!/.claude/skills/*/*.md
+
+# 4) anki-mcp-server/  →  named source only. Without the `/*` line this subtree was a
+#    blacklist hole inside the whitelist: anything dropped in it committed cleanly.
+/anki-mcp-server/*
+!/anki-mcp-server/src/
+!/anki-mcp-server/package.json
+!/anki-mcp-server/package-lock.json
+!/anki-mcp-server/tsconfig.json
+!/anki-mcp-server/README.md
+
+# 5) method/, anki/ and tools/  →  prose, the note type, and code plus its README
+/method/*
+!/method/1-extract.md
+!/method/2-organize.md
+!/method/3-cards.md
+/anki/*
+!/anki/README.md
+!/anki/custom-cloze.json
+/tools/*
+!/tools/README.md
+!/tools/read_slide_handout.py
+!/tools/capture_server.py
+!/tools/capture_views.js
+!/tools/fetch_overlay_slides.py
+!/tools/fetch_unlabeled_slides.py
+!/tools/check_deck.py
+
+# 6) kept locally, never published.
+#    NOTE: a `#` on a pattern line is NOT a trailing comment — git takes it as part
+#    of the pattern, and the rule then silently matches nothing. Comments go above.
+#    coursework/ = symlink to the course material, outside this tree
+#    recaps/     = session history, quotes lectures verbatim
+#    backups/    = exported decks
+/coursework
+/recaps/
+/backups/
+
+# 7) belt-and-suspenders — NEVER commit these types, wherever they appear
+*.pdf
+*.apkg
+*.m4a
+*.mp4
+*.mp3
+*.vtt
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.rtf
+*.jpg
+*.jpeg
+*.png
+*.env
+.env
+.env.*
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+/.jj/
