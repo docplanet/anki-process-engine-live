@@ -61,5 +61,7 @@ also runs alone, against live cards, to repair a deck already in Anki.
 
 ## If you are Claude Code
 
-`.claude/skills/` holds three skills that trigger on the same three files. They contain no rules —
-only frontmatter and a pointer — so there is never a second copy to drift.
+`.claude/skills/` holds the three method files themselves — frontmatter plus the full method — so
+invoking a skill puts its rules in context. `method/1-extract.md` and its two siblings are symlinks
+to them: one copy, two paths, nothing to drift. They used to be pointers, and a pointer is a rule an
+agent can decline to read.

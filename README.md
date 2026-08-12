@@ -36,8 +36,9 @@ There is no program to run. The work is three markdown files, and the order is t
 **Nothing here is tied to one assistant.** The method is prose: an agent in any harness can read it,
 and so can you. It needs Anki with the AnkiConnect add-on — an HTTP endpoint anything can POST to —
 and the `Custom Cloze` note type, which [`SETUP.md`](SETUP.md) creates in one command. [`AGENTS.md`](AGENTS.md) is the entry point;
-[`.claude/skills/`](.claude/skills/) is a thin adapter that makes the same three files trigger
-automatically in Claude Code, and holds no rules of its own.
+[`.claude/skills/`](.claude/skills/) holds those same three files, so they trigger automatically in
+Claude Code and arrive with their rules — the `method/` paths above are symlinks to them. One copy,
+two names.
 
 Each step writes its artifact into the lecture folder and hands off to the next, so a session can
 resume at any step. Step 3 also runs alone, against the live cards, to repair a deck already in
@@ -115,6 +116,12 @@ The deepest gap wasn't in the 140 either. Every one of them was a *prohibition* 
 what a normal card looks like. Nothing said a card has a bold subject and an italic answer. That is
 why an agent could break no rule and still be wrong, and it is why step 3 now opens with what a
 card *is*, and with seven worked examples, before it lists a single constraint.
+
+**A rule that has to be fetched is a rule that can be skipped.** The three skills used to be
+eleven-line pointers at `method/`. An agent invoked one, said it had read the method, and built a
+284-card deck on the wrong unit of extraction — and the file it skipped names that exact defect in
+its second paragraph. The fix needed no code either: the skills now *are* the method files, and
+`method/` holds symlinks back to them. Nothing to fetch, nothing to claim having fetched.
 
 Counting cards is not how you check them. A measured ratio — how many carry two clozes, how many
 use a facet — describes whatever deck you measured, and a deck built by a broken process measures
