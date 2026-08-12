@@ -53,6 +53,7 @@
 /tools/*
 !/tools/README.md
 !/tools/read_slide_handout.py
+!/tools/fetch_zif_view.py
 !/tools/capture_server.py
 !/tools/capture_views.js
 !/tools/fetch_overlay_slides.py

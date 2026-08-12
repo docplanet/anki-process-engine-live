@@ -16,7 +16,7 @@ never inventing what a field of view shows.
 
 | site | unlabeled image | its own label |
 |---|---|---|
-| histologyguide.org | the viewer canvas, at `?x=&y=&z=` | `<slide>/annotations.xml` — named structures at exact x/y/zoom |
+| histologyguide.org | tiles read out of `/slides/<slide>.zif` | `<slide>/annotations.xml` — named structures at exact x/y/zoom |
 | digitalhistology.org (VCU) | the base image of each `subcontent-N` | `<h3 class="slide-title">`, one per pointer overlay |
 | medcell.org (Histology@Yale) | `images/<slug>.jpg` | `<div class="slide-title">`; labels live in a separate `_labels.png` |
 | histologyslides.med.umich.edu | viewer canvas, **whole-slide only** | none — it ignores zoom URL parameters |
@@ -48,31 +48,53 @@ python3 tools/fetch_overlay_slides.py targets.json        # [["https://digitalhi
 python3 tools/fetch_unlabeled_slides.py blood_bone_marrow_lab erythrocytes neutrophil -o shots -p blood
 ```
 
-**3b. Capture histologyguide fields of view.** Start the sink, then drive the viewer in a browser:
+**3b. Render histologyguide fields of view.** No browser. A histologyguide slide is one `.zif` —
+Zoomify Image Format, which is a BigTIFF holding the whole pyramid as JPEG tiles, and the server
+takes range requests. So a field of view is arithmetic rather than a screenshot:
+
+```bash
+.venv/bin/python tools/fetch_zif_view.py views.json -o shots
+```
+
+`views.json` is `[{"name", "slide", "x", "y", "z", "w", "h"}, …]`. Paste `x`, `y`, `z` straight
+across from `annotations.xml` or from a slideview URL — `z` is the percentage those write, and the
+tool picks the tier itself. `read_slide_handout.py -o slides.json` gives you every coordinate on
+every assigned slide, so the whole batch is one loop over that file.
+
+Deterministic, so the same coordinates give the same image: no settle timers, no half-drawn tiles,
+no clamped zoom. Look at the batch anyway — for what a field *contains*, not whether it rendered.
+
+<details><summary>The browser route it replaced, still here for a viewer that is not Zoomify</summary>
+
+Start the sink, navigate to the first view by URL (`…/05-slide-1.html?x=…&y=…&z=…`), then run
+[`capture_views.js`](capture_views.js) in the page. It composites the tile canvases, retries while
+the image is still blank, posts the bytes to [`capture_server.py`](capture_server.py), and sets
+`location.href` to the next view — one call per page load, and the script survives a tool timeout.
 
 ```bash
 python3 tools/capture_server.py shots 8799
 ```
 
-Navigate to the first view by URL (`…/05-slide-1.html?x=…&y=…&z=…`), then run
-[`capture_views.js`](capture_views.js) in the page. It composites the tile canvases, retries while
-the image is still blank, posts the bytes to the sink, and sets `location.href` to the next view —
-so one call per page load, and the script survives a tool timeout.
-
-Two traps, both silent:
+Three traps, all silent:
 
 - **`?z=75.567` is a percentage; `Z.Viewport.zoomAndPanToView(x, y, z)` wants a 0–1 fraction** and
   clamps anything larger to 1. Pass the percentage and you get a plausible, blurry, wrong-tier
   image — no error.
 - **Programmatic pan/zoom only renders sharp on a freshly URL-loaded page.** Load the first view by
   URL, then `zoomAndPanToView` for the rest of that slide's views.
+- **The browser may refuse to reach the sink at all.** A page on a public origin posting to
+  `127.0.0.1` is subject to Private Network Access, and some embedded browsers block it outright
+  (`net::ERR_BLOCKED_BY_CLIENT`) whatever the server replies. Check the network log before
+  debugging the capture itself.
+
+</details>
 
 **4. Stage the images into Anki, write the cards, then check them.** `check_deck.py` fails any
 card whose image is not already in `collection.media` — see the `storeMediaFile` call in
 [`method/3-cards.md`](../method/3-cards.md).
 
 ```bash
-python3 tools/check_deck.py deck.json
+python3 tools/check_deck.py --transcript "coursework/.../lecture.txt" deck.json
 ```
 
 It looks for each card's image in Anki's `collection.media`. Point it elsewhere with
@@ -82,11 +104,32 @@ Exactly one cloze, image present and unclozed, answer in `<i>` with a hint, and 
 rendered front that names the answer. It deliberately ignores the hint — a hint
 is allowed to name the category (`which tissue?`) even when the answer ends in that word.
 
+**Two of its checks are about what the card claims, not how it is built.** Both exist because a
+deck shipped with the mistake and re-reading never caught it:
+
+- **`?z=50` is 50% zoom, not the 50x objective.** Writing the zoom onto the back as a
+  magnification reads perfectly and is wrong; it went through six decks. The tell is mechanical —
+  the stated `Nx` equals the `z` in the card's own link — so the check just looks for that.
+  State an objective only where a source states one: histologyguide's `annotations.xml` sometimes
+  names it ("Motor Neuron (40x)" at `z=100`), and that ratio belongs to *that* scan, not to slides
+  generally. Otherwise write low / mid / high power.
+- **`--transcript` checks each `Source:` quote against the lecture it is attributed to.** Not as a
+  substring: it strips the Zoom scaffolding, then requires the quote's words to appear in order
+  without much foreign material between them, because speech is disfluent and the ASR punctuates
+  it at random — tidying a stray "oh." out of the middle of a clause is faithful, inventing a
+  sentence is not. Mark elisions with `...` and repairs with `[brackets]`, and bracket a **whole
+  word** — `[Toluidine] Blue`, never `Tolu[idine] Blue` — or the check is left hunting half a
+  word, and so are you.
+
+Neither replaces reading. A quote can be word-perfect and attached to the wrong image, and a
+description can name a feature that is not in the picture — this deck had both, and only an
+independent pass over the images found them.
+
 ## Dependencies
 
 `read_slide_handout.py`, `capture_server.py` and `check_deck.py` are standard library only.
-`fetch_overlay_slides.py` and `fetch_unlabeled_slides.py` need Pillow, and macOS system Python refuses to install into
-itself (PEP 668), so give them a venv:
+`fetch_zif_view.py`, `fetch_overlay_slides.py` and `fetch_unlabeled_slides.py` need Pillow, and
+macOS system Python refuses to install into itself (PEP 668), so give them a venv:
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install Pillow

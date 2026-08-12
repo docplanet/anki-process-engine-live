@@ -11,9 +11,17 @@ so the seven reference exemplars all pass — which method/3-cards.md requires o
 Accepts a bare list of notes, {"notes": [...]}, or an AnkiConnect {"params": {"notes": [...]}}
 payload. Exits non-zero if anything fails, so it can gate a pipeline.
 
+Two of the checks are about what a card *claims* rather than how it is shaped, because both were
+things a whole deck shipped with and no reading pass caught:
+
+  - a magnification that is really the slide link's own zoom percentage ("50x" beside ?z=50)
+  - a `Source:` quote whose words are not in the transcript it is attributed to (--transcript)
+
     python3 tools/check_deck.py [--no-media] deck.json
+    python3 tools/check_deck.py --transcript "lecture.txt" deck.json
     ANKI_MEDIA=/path/to/collection.media python3 tools/check_deck.py deck.json
 """
+import html
 import json
 import os
 import re
@@ -30,6 +38,14 @@ CLOZE = re.compile(r"\{\{c(\d+)::((?:(?!\}\})[\s\S])*)\}\}")
 IMAGE_TAG = re.compile(r"<img\b[^>]*>")
 IMAGE_SRC = re.compile(r'''<img\b[^>]*\bsrc=["']([^"']+)["']''')
 
+LINK_ZOOM = re.compile(r"[?&]z=([\d.]+)")
+MAGNIFICATION = re.compile(r"\b(\d+)x\b")
+QUOTED = re.compile(r"&ldquo;([\s\S]*?)&rdquo;|“([\s\S]*?)”")
+# A quote is checked in pieces: "..." marks something left out, and "[]" marks a word repaired,
+# so neither span is expected to appear in the source verbatim.
+QUOTE_GAP = re.compile(r"\.\.\.|…|\[[^\]]*\]")
+MIN_FRAGMENT_WORDS = 5                                     # shorter pieces match by accident
+
 
 def clozes(text):
     """[(number, value, hint_or_None)] — the hint is whatever follows the last '::'."""
@@ -41,6 +57,100 @@ def clozes(text):
     return out
 
 
+def zoom_worn_as_magnification(extra):
+    """['50x vs z=50'] — a stated objective that is really the slide link's zoom percentage.
+
+    `?z=50` on a virtual slide is 50% zoom of the scan, not the 50x objective, and the two are
+    unrelated numbers. Writing the zoom onto the card as "50x" reads perfectly and is wrong; the
+    tell is that it equals the z in the card's own link. It survived six decks before anyone asked.
+    """
+    zoom = LINK_ZOOM.search(extra)
+    if not zoom:
+        return []
+    stated = float(zoom.group(1))
+    # The claim is the zoom rounded to something tidy, so allow for that: z=74.286 got written up
+    # as "75x", z=19.475 as "20x". Anything this close to the link's own z is the zoom, not a lens.
+    tolerance = max(1.0, 0.02 * stated)
+    return [f"{claim}x vs z={zoom.group(1)}" for claim in set(MAGNIFICATION.findall(extra))
+            if abs(float(claim) - stated) <= tolerance]
+
+
+TIMESTAMP = re.compile(r"^\d{1,2}:\d{2}:\d{2}\s*-->\s*\d{1,2}:\d{2}:\d{2}\s*$")
+SPEAKER = re.compile(r"^[^:]{1,40}:\s")
+
+
+def words(text):
+    return re.findall(r"[a-z0-9&]+", text)
+
+
+def normalize(text):
+    text = html.unescape(re.sub(r"<[^>]+>", " ", text)).lower()
+    for fancy, plain in (("’", "'"), ("‘", "'"), ("“", '"'),
+                         ("”", '"'), ("—", "-"), ("–", "-")):
+        text = text.replace(fancy, plain)
+    return re.sub(r"\s+", " ", text)
+
+
+def load_transcript(path):
+    """The spoken words alone, run together.
+
+    A Zoom transcript wraps every utterance in a timestamp block and a speaker name, so a quote
+    that runs across two lines - which most do, since the speaker pauses mid-sentence - never
+    appears as one contiguous string until that scaffolding comes out.
+    """
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        lines = handle.read().splitlines()
+    spoken = [SPEAKER.sub("", line).strip() for line in lines
+              if line.strip() and not TIMESTAMP.match(line)]
+    return words(normalize(" ".join(spoken)))
+
+
+def find_words(fragment, transcript, start):
+    """Where `fragment`'s words run, in order, from `start` on - or -1.
+
+    Not a substring match. Speech is disfluent and the ASR punctuates it at random - a sentence
+    comes back as "the outer layer here. is the capsule", or with an "oh." dropped into the middle
+    of a clause - so a quote that tidies that up is still faithful. What must hold is that every
+    word appears, in order, without much foreign material wedged in between, which fabricated or
+    reordered text cannot satisfy.
+    """
+    slack = max(4, len(fragment) // 4)
+    for begin in (i for i, word in enumerate(transcript[start:], start) if word == fragment[0]):
+        at, skipped = begin, 0
+        for word in fragment:
+            while at < len(transcript) and transcript[at] != word:
+                at, skipped = at + 1, skipped + 1
+                if skipped > slack:
+                    break
+            if skipped > slack or at >= len(transcript):
+                break
+            at += 1
+        else:
+            return at
+    return -1
+
+
+def unsourced_quote_fragments(extra, transcript):
+    """Pieces of the card's Source quote that are not in the transcript it claims to come from."""
+    found = QUOTED.search(extra)
+    if not found:
+        return []
+    quote = normalize(found.group(1) or found.group(2))
+    missing, cursor = [], 0
+    for piece in QUOTE_GAP.split(quote):
+        fragment = words(piece)
+        if len(fragment) < MIN_FRAGMENT_WORDS:
+            continue
+        # Fragments must also appear in order, so a quote cannot be assembled back to front.
+        position = find_words(fragment, transcript, cursor)
+        if position < 0:
+            text = " ".join(fragment)
+            missing.append(text[:60] + ("..." if len(text) > 60 else ""))
+        else:
+            cursor = position
+    return missing
+
+
 def shape_of(text):
     stripped = text.lstrip()
     if stripped.startswith("{{c1::<img"):
@@ -50,11 +160,12 @@ def shape_of(text):
     return "prose"
 
 
-def check(note, check_media=True):
+def check(note, check_media=True, transcript=None):
     """Return a list of problem strings for one note."""
     problems = []
     fields = note["fields"]
     text = fields["Text"]
+    extra = fields.get("Extra", "") or ""
     shape = shape_of(text)
     spans = clozes(text)
     numbers = sorted({n for n, _, _ in spans}, key=int)
@@ -71,6 +182,13 @@ def check(note, check_media=True):
                 continue
             if check_media and not os.path.exists(os.path.join(MEDIA_DIR, source.group(1))):
                 problems.append(f"media missing from the collection: {source.group(1)} (in {field})")
+
+    for claim in zoom_worn_as_magnification(extra):
+        problems.append(f"states {claim}: a slideview z is a zoom percentage, not an objective")
+
+    if transcript is not None:
+        for fragment in unsourced_quote_fragments(extra, transcript):
+            problems.append(f"quoted text is not in the transcript: {fragment!r}")
 
     for number, value, hint in spans:
         is_image = bool(IMAGE_TAG.search(value))
@@ -133,21 +251,36 @@ def load(path):
 
 
 def main(argv):
+    transcript_path = None
+    if "--transcript" in argv:
+        position = argv.index("--transcript")
+        transcript_path = argv[position + 1]
+        argv = argv[:position] + argv[position + 2:]
+
     args = [a for a in argv[1:] if not a.startswith("-")]
     flags = {a for a in argv[1:] if a.startswith("-")}
     if len(args) != 1 or flags - {"--no-media"}:
-        print("usage: check_deck.py [--no-media] deck.json", file=sys.stderr)
+        print("usage: check_deck.py [--no-media] [--transcript lecture.txt] deck.json",
+              file=sys.stderr)
         return 2
 
     check_media = "--no-media" not in flags and os.path.isdir(MEDIA_DIR)
     if not check_media and "--no-media" not in flags:
         print(f"note: {MEDIA_DIR} not found - skipping the media check", file=sys.stderr)
 
+    transcript = None
+    if transcript_path:
+        try:
+            transcript = load_transcript(transcript_path)
+        except OSError as error:
+            raise SystemExit(f"cannot read {transcript_path}: {error}")
+
     notes = load(args[0])
     if not notes:
         print(f"{args[0]} contains no notes", file=sys.stderr)
         return 2
-    findings = [(i, p) for i, note in enumerate(notes, 1) for p in check(note, check_media)]
+    findings = [(i, p) for i, note in enumerate(notes, 1)
+                for p in check(note, check_media, transcript)]
 
     # On a recognition card the first non-image cloze IS the answer; on a prose card it is the
     # subject. Counting them in one column would be counting two different things.

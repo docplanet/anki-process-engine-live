@@ -32,6 +32,9 @@ class CaptureHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Headers", "*")
         self.send_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+        # Private Network Access: a page on a public origin reaching 127.0.0.1 is preflighted even
+        # when the request is otherwise CORS-simple, and the browser drops it unless this comes back.
+        self.send_header("Access-Control-Allow-Private-Network", "true")
 
     def do_OPTIONS(self):
         self.send_response(204)
