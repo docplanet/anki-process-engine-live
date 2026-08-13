@@ -201,9 +201,36 @@ def check(note, check_media=True, transcript=None):
         shared = [(v, h) for n, v, h in spans if n == number]
         if hint is None and not (len(shared) > 1 and shared[0][1]):
             problems.append(f"c{number} carries no hint")
+        if hint is not None:
+            if not hint.endswith("?"):
+                problems.append(f"c{number} hint does not end in '?': {hint!r}")
+            elif "," in hint or len(hint.rstrip("?").split()) > 3:
+                problems.append(f"c{number} hint is not one to three words: {hint!r}")
 
     if len(numbers) > 3:
         problems.append(f"{len(numbers)} cloze numbers; never more than three")
+
+    # The card ends on its answer. Trailing scaffolding after the final cloze - ", running
+    # dorsally on each side of the foregut" - is content the blank never asks for: it either
+    # deserved its own card or belongs in Extra. Eleven cards in one deck shipped this way, and
+    # no pass caught it because every one of them parsed cleanly.
+    tail = html.unescape(re.sub(r"<[^>]+>", "", text[text.rfind("}}") + 2:])).strip()
+    if tail:
+        problems.append(f"text after the final cloze: {tail[:48]!r}")
+
+    # A role tag never wraps a cloze. Anki renders a revealed cloze as its own span.cloze, which
+    # sets colour on itself, so a colour merely inherited from an enclosing <b> is overridden and
+    # the role silently vanishes on screen. The tag goes inside the braces (see anki/README.md).
+    if re.search(r"<[biu]>[^<]*\{\{c\d", text):
+        problems.append("a role tag wraps a cloze; the tag must sit directly on the text")
+
+    # A possessive outside the bolded subject means the entity is wrong - with the right entity
+    # there is nothing to possess, only to describe. Eponyms (Wharton's jelly) live inside <b>.
+    if shape == "prose":
+        bare = re.sub(r"<b>[\s\S]*?</b>", " ", text)
+        bare = html.unescape(bare).replace("’", "'")
+        if re.search(r"\w's\s", bare):
+            problems.append("a possessive outside the subject; step 2 handed the wrong entity")
 
     if shape == "prose":
         if "<b>" not in text:
@@ -292,10 +319,20 @@ def main(argv):
         if first:
             (answers if shape_of(text) != "prose" else subjects)[first] += 1
 
+    # Reported, not failed: a visible subject is legal only with a defence (two other terms that
+    # answer its reverse question), and a script cannot read a defence. The method's floor is
+    # roughly nine in ten clozed - if this list is long, the default slipped.
+    visible = [i for i, note in enumerate(notes, 1)
+               if shape_of(note["fields"]["Text"]) == "prose"
+               and not re.search(r"\{\{c\d+::<b>", note["fields"]["Text"])]
+
     print(f"notes: {len(notes)}")
     for label, counter in (("answer", answers), ("subject", subjects)):
         for value, count in counter.most_common():
             print(f"  {count:3d}  {label:8s} {value}")
+    if visible:
+        print(f"subjects never clozed ({len(visible)} - each needs a defence): "
+              + ", ".join(f"note {i}" for i in visible))
     print("PROBLEMS:" if findings else "clean")
     for position, problem in findings:
         print(f"   note {position}: {problem}")

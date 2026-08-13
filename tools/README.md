@@ -104,6 +104,13 @@ Exactly one cloze, image present and unclozed, answer in `<i>` with a hint, and 
 rendered front that names the answer. It deliberately ignores the hint — a hint
 is allowed to name the category (`which tissue?`) even when the answer ends in that word.
 
+On prose cards it also holds the line that judgment keeps sliding off: **the card ends on its
+answer** (a clause trailing the final cloze is content the blank never asked for — eleven cards in
+one deck shipped that way and parsed cleanly), no role tag wrapping a cloze (the rendered colour
+silently vanishes — see [`anki/README.md`](../anki/README.md)), hints one to three words ending in
+`?`, and no possessive outside the bolded subject. Subjects never clozed are *reported*, not
+failed — a visible subject is legal only with a defence, and a script cannot read a defence.
+
 **Two of its checks are about what the card claims, not how it is built.** Both exist because a
 deck shipped with the mistake and re-reading never caught it:
 
@@ -125,9 +132,21 @@ Neither replaces reading. A quote can be word-perfect and attached to the wrong 
 description can name a feature that is not in the picture — this deck had both, and only an
 independent pass over the images found them.
 
+**5. Render the deck for review.** The handover step shows the user cards, not JSON:
+
+```bash
+python3 tools/render_review.py deck.json          # review.html beside deck.json
+```
+
+One page, every note: a front per cloze (that blank shown as its `[hint]`, siblings revealed),
+the backs, the Source line, the Extra with its staged image. The Fronts view is where the
+hint-fluency test runs — read each sentence with the blank in place and it must still be English.
+
+
 ## Dependencies
 
-`read_slide_handout.py`, `capture_server.py` and `check_deck.py` are standard library only.
+`read_slide_handout.py`, `capture_server.py`, `check_deck.py` and `render_review.py` are
+standard library only.
 `fetch_zif_view.py`, `fetch_overlay_slides.py` and `fetch_unlabeled_slides.py` need Pillow, and
 macOS system Python refuses to install into itself (PEP 668), so give them a venv:
 

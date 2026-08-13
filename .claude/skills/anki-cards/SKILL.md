@@ -307,6 +307,16 @@ card's source quote beneath it, and render it to an HTML file in the lecture fol
 as well as the answers — the fluency test in Hints can only be run against the front of the card,
 and that is the pass that catches a hint the sentence will not read with.
 
+**The deck's writer does not clear the deck.** Every check above runs in the head that wrote the
+cards, and a self-check is strong on bookkeeping and blind to premise: *a 284-card deck once passed
+its plan reconciliation, its shape checker and its coverage table while built on the wrong unit of
+extraction — one look from a reader who had written none of it exposed the defect class, and two
+independent read-backs of the sources found 21 real gaps the pipeline's own coverage passes had
+signed off.* So before the insert, hand the finished deck to a reader who wrote no card of it —
+another agent, or the owner — with the sources beside it, asked for findings only: truth against
+each card's quote, fluency of the fronts, coverage against the objectives. A flag sends you back to
+the source, not to the markup, and the fix gets reviewed again.
+
 With it, **report `plan.md`'s `## Carried to handover` section in full — unprompted, once.** Every
 item in it exists because something was decided on the user's behalf: a term overruled, an
 objective nothing answered, a source conflict resolved, a fact cut. A decision like that is
