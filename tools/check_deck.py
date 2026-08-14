@@ -43,7 +43,10 @@ IMAGE_SRC = re.compile(r'''<img\b[^>]*\bsrc=["']([^"']+)["']''')
 
 LINK_ZOOM = re.compile(r"[?&]z=([\d.]+)")
 MAGNIFICATION = re.compile(r"\b(\d+)x\b")
-QUOTED = re.compile(r"&ldquo;([\s\S]*?)&rdquo;|“([\s\S]*?)”")
+# The label form ('Source (spoken): "..."') is how real decks write their quotes - in ASCII
+# quotes, which the curly-quote forms here never matched, so for a while this check passed
+# decks it had never read. The curly forms are kept for anything older.
+QUOTED = re.compile(r"&ldquo;([\s\S]*?)&rdquo;|“([\s\S]*?)”|:\s*\"([\s\S]*?)\"")
 # A quote is checked in pieces: "..." marks something left out, and "[]" marks a word repaired,
 # so neither span is expected to appear in the source verbatim.
 QUOTE_GAP = re.compile(r"\.\.\.|…|\[[^\]]*\]")
@@ -138,7 +141,7 @@ def unsourced_quote_fragments(extra, transcript):
     found = QUOTED.search(extra)
     if not found:
         return []
-    quote = normalize(found.group(1) or found.group(2))
+    quote = normalize(found.group(1) or found.group(2) or found.group(3))
     missing, cursor = [], 0
     for piece in QUOTE_GAP.split(quote):
         fragment = words(piece)
@@ -189,7 +192,9 @@ def check(note, check_media=True, transcript=None):
     for claim in zoom_worn_as_magnification(extra):
         problems.append(f"states {claim}: a slideview z is a zoom percentage, not an objective")
 
-    if transcript is not None:
+    # Only a quote the card itself attributes to the lecture is checked against it - the
+    # transcript is the wrong authority for a slide's text, so the gate is the Source field.
+    if transcript is not None and "transcript" in fields.get("Source", "").lower():
         for fragment in unsourced_quote_fragments(extra, transcript):
             problems.append(f"quoted text is not in the transcript: {fragment!r}")
 
