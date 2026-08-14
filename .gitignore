@@ -59,6 +59,7 @@
 !/tools/fetch_overlay_slides.py
 !/tools/fetch_unlabeled_slides.py
 !/tools/check_deck.py
+!/tools/render_review.py
 
 # 6) kept locally, never published.
 #    NOTE: a `#` on a pattern line is NOT a trailing comment — git takes it as part
