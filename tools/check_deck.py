@@ -17,6 +17,9 @@ things a whole deck shipped with and no reading pass caught:
   - a magnification that is really the slide link's own zoom percentage ("50x" beside ?z=50)
   - a `Source:` quote whose words are not in the transcript it is attributed to (--transcript)
 
+Beside the failures it reports two deck-wide numbers it cannot fail — the <u> facet count and
+the slide-tag coverage — because both drifts shipped once and neither is visible per-card.
+
     python3 tools/check_deck.py [--no-media] deck.json
     python3 tools/check_deck.py --transcript "lecture.txt" deck.json
     ANKI_MEDIA=/path/to/collection.media python3 tools/check_deck.py deck.json
@@ -333,6 +336,29 @@ def main(argv):
     if visible:
         print(f"subjects never clozed ({len(visible)} - each needs a defence): "
               + ", ".join(f"note {i}" for i in visible))
+
+    # Reported, not failed, like the visible subjects above. A definition card carries no facet
+    # legitimately, so a script cannot fail a card for the lack; what it can do is show the
+    # deck-wide number. The drift this exists for sat at 11 of 125 against a plan that named an
+    # aspect on 93 rows, and no per-card reading surfaced the cliff - only the count does.
+    prose_notes = [note for note in notes if shape_of(note["fields"]["Text"]) == "prose"]
+    if prose_notes:
+        faceted = sum(1 for note in prose_notes if "<u>" in note["fields"]["Text"])
+        print(f"facets: {faceted} of {len(prose_notes)} prose cards carry a <u>")
+
+    # Also reported, not failed: which slides the deck covers, read off the slide:: tags. A
+    # missing card is invisible in principle - no card shows you a card that does not exist -
+    # and one deck claimed full slide coverage while a slide inside its range had none. Only
+    # holes between the first and last carded slide are visible from the tags; the printed
+    # range is the invitation to compare its far end against the deck's real last slide.
+    slide_tag = re.compile(r"slide::.+-(\d+)$")
+    carded = {int(m.group(1)) for note in notes for tag in note.get("tags", [])
+              for m in [slide_tag.match(tag)] if m}
+    if carded:
+        low, high = min(carded), max(carded)
+        holes = [str(s) for s in range(low, high + 1) if s not in carded]
+        print(f"slide tags cover {low}-{high}"
+              + (f"; no card for: {', '.join(holes)}" if holes else ""))
     print("PROBLEMS:" if findings else "clean")
     for position, problem in findings:
         print(f"   note {position}: {problem}")

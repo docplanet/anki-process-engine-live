@@ -301,23 +301,33 @@ Then write the deck to **`<folder>/deck.json`** — the `anki_add_notes` payload
 model, fields and tags — so an interrupted session can be resumed and inserted without rebuilding
 it.
 
-**Then show the user the cards, not the payload.** Nobody reviews a deck by reading JSON. Render
-every card as it will appear, in lecture order, with the three roles visually distinct and each
-card's source quote beneath it, and render it to an HTML file in the lecture folder, then open it. Give it a way to show the *faces*
-as well as the answers — the fluency test in Hints can only be run against the front of the card,
-and that is the pass that catches a hint the sentence will not read with.
+**Then the run-sheet — fixed steps, in order.** The first one also runs itself: a hook
+(`.claude/settings.json` → `tools/hooks/on_deck_write.sh`) fires the structural check on every
+write of a `deck.json`, so its report arrives whether or not anyone remembers to ask. The steps
+exist because every one of them was once left to memory, and each was eventually forgotten by a
+session that believed the deck was already clean.
 
-**The deck's writer does not clear the deck.** Every check above runs in the head that wrote the
-cards, and a self-check is strong on bookkeeping and blind to premise: *a 284-card deck once passed
-its plan reconciliation, its shape checker and its coverage table while built on the wrong unit of
-extraction — one look from a reader who had written none of it exposed the defect class, and two
-independent read-backs of the sources found 21 real gaps the pipeline's own coverage passes had
-signed off.* So before the insert, hand the finished deck to a reader who wrote no card of it —
-another agent, or the owner — with the sources beside it, asked for findings only: truth against
-each card's quote, fluency of the fronts, coverage against the objectives. A flag sends you back to
-the source, not to the markup, and the fix gets reviewed again.
+1. **Check** — `python3 tools/check_deck.py --transcript <lecture.txt> deck.json` — the full form:
+   media staged, every `Source:` quote found in the transcript it is attributed to. Must end
+   `clean`. Read the report lines above the verdict too: the facet count and the slide coverage
+   are reported rather than failed, and a cliff in either is a finding even when the verdict says
+   clean — one deck shipped 11 facets across 125 cards against a plan that named 93, and another
+   claimed full slide coverage over a slide with no card.
+2. **Render** — `python3 tools/render_review.py deck.json`, then open `review.html`. The user
+   reviews cards, not JSON, and the Fronts view is where the hint-fluency test runs — a hint the
+   sentence will not read with only shows itself on the face.
+3. **Audit** — launch **`deck-auditor`** (`.claude/agents/deck-auditor.md`) on the lecture folder.
+   The deck's writer does not clear the deck: a self-check is strong on bookkeeping and blind to
+   premise. *A 284-card deck once passed its plan reconciliation, its shape checker and its
+   coverage table while built on the wrong unit of extraction — one look from a reader who had
+   written none of it exposed the defect class.* The auditor's brief — truth, fluency, coverage,
+   and style against the seven — is fixed in its definition precisely so it is not re-improvised
+   each session; the one session that improvised it left style out, and the drift that angle
+   would have caught reached the owner instead.
+4. **Fix** — a flag sends you back to the source, not to the markup, and the fix is a separate
+   pass that gets reviewed again. Re-run steps 1 and 2 after it.
 
-With it, **report `plan.md`'s `## Carried to handover` section in full — unprompted, once.** Every
+With the audited deck, **report `plan.md`'s `## Carried to handover` section in full — unprompted, once.** Every
 item in it exists because something was decided on the user's behalf: a term overruled, an
 objective nothing answered, a source conflict resolved, a fact cut. A decision like that is
 reported at handover, not left in a note field or a file for them to find.
@@ -325,4 +335,4 @@ reported at handover, not left in a note field or a file for them to find.
 Report the section as it stands; do not keep a list here of what it should contain. Upstream owns
 what goes in, this step owns that it arrives — that separation is why nothing falls between them.
 
-Insert with `anki_add_notes` once they say go.
+Insert with `anki_add_notes` **only when the user says go** — never before, and never inferred.

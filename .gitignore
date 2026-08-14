@@ -22,9 +22,11 @@
 !/.claude/
 !/anki-mcp-server/
 
-# 3) .claude/  →  ONLY the card-authoring skills, named one by one so a future
-#    skill has to be added here deliberately rather than publishing itself.
+# 3) .claude/  →  ONLY the card-authoring skills, the auditor, and the hook wiring,
+#    named one by one so a future addition has to be added here deliberately rather
+#    than publishing itself.
 /.claude/*
+!/.claude/settings.json
 !/.claude/skills/
 /.claude/skills/*
 !/.claude/skills/anki-extract/
@@ -32,6 +34,9 @@
 !/.claude/skills/anki-cards/
 /.claude/skills/*/*
 !/.claude/skills/*/*.md
+!/.claude/agents/
+/.claude/agents/*
+!/.claude/agents/deck-auditor.md
 
 # 4) anki-mcp-server/  →  named source only. Without the `/*` line this subtree was a
 #    blacklist hole inside the whitelist: anything dropped in it committed cleanly.
@@ -60,6 +65,9 @@
 !/tools/fetch_unlabeled_slides.py
 !/tools/check_deck.py
 !/tools/render_review.py
+!/tools/hooks/
+/tools/hooks/*
+!/tools/hooks/on_deck_write.sh
 
 # 6) kept locally, never published.
 #    NOTE: a `#` on a pattern line is NOT a trailing comment — git takes it as part
