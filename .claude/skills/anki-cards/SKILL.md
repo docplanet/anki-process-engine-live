@@ -216,7 +216,10 @@ to **[step 2 — organize](2-organize.md)** rather than planning inline. Decidin
 
 **Repairing cards already in Anki: there is no `plan.md`, and there should not be one.** That gate
 is for building. Here the live cards are the input — read them from Anki, fix them against the seven,
-and re-read a card's current text before editing it. The plan-to-cards check below does not apply,
+and re-read a card's current text before editing it. **When a repair flips a card's roles, keep each
+cloze number attached to the content it currently tests** — c1 stays on whatever c1 was blanking,
+wherever that content moves in the sentence — so every card's review history follows its content
+through the edit; the owner's own repairs do this. The plan-to-cards check below does not apply,
 and neither does the handover report; you owe the user the list of what you changed and why.
 
 **Draft 10–15 cards per pass and re-read the seven at the start of every pass.** Not from memory:

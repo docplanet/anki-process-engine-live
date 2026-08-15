@@ -67,6 +67,21 @@ The entity is a real thing rather than a heading, and one source sentence still 
 ("T tubules are found in skeletal and cardiac muscle") unless a single source states it: that
 sentence is true but appears nowhere, and a card built on it has no verbatim quote to carry.
 
+**A description is not an entity either.** The slide writes "Maternal component: decidua basalis",
+and a card that inherits that ordering — "The maternal component of the placenta is {{the decidua
+basalis}}" — has the roles reversed: the name lands in the answer slot and a definite description
+takes the subject. The entity is the **named thing**; its role, identity or fate is the value:
+
+```
+Decidua basalis | — | the maternal component of the placenta | Slide N
+```
+
+The tell is a value slot holding a proper name. Reversed, the deck never asks the one question the
+term exists to answer — "The decidua basalis is [what?]" — and the subject cloze degrades to an
+adjective blank ("The [which component?] component of the placenta…"). *Three placenta-lecture
+cards shipped reversed and the owner flipped them by hand; the source ordering is what reversed
+them, which is exactly the sentence-shape inheritance this pipeline exists to break.*
+
 **Check before handing the plan on: if a single entity appears in more than a quarter of the lines,
 the entities are wrong.** Go back through fact by fact and ask what the sentence is about.
 

@@ -53,7 +53,10 @@ know", "not gonna ask", "won't ask", "extra info".
 
 **4. Style.** Put every card beside the reference card of the same shape. The seams that have
 actually slipped: a `<u>` that swallowed the verb which *is* the answer (the Tropomodulin error),
-and its mirror, an aspect left as bare prose; a contrast bolted into the blank ("X — not Y",
+and its mirror, an aspect left as bare prose; a subject slot holding a definite description while
+the answer holds the proper name ("The maternal component of the placenta is {{the decidua
+basalis}}") — the entity is the named thing, and reversed, the deck never asks "The [name] is
+[what?]"; a contrast bolted into the blank ("X — not Y",
 "rather than", "unlike") when the recall is X alone — the not-Y belongs in Extra as a flag
 line (`<i>**</i>flag<i>**</i>` — asterisks italicized, text plain), unless the negative is itself the fact; a parallel set whose distinguishing term is visible
 on every card of the set; a subject that does not open the sentence, or whose trailing half sits
