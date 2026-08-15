@@ -182,7 +182,10 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
   be asked separately? A rich single fact — a why-clause, an inline set, a bounded range — is one
   recall however wordy, and stays whole.
 - **A bounded value is one answer.** "between A and B", "from X to Y", "A to B" — blanking only the
-  far end hands over half the fact. *"lie between the sarcolemma and {{the basal lamina}}" was
+  far end hands over half the fact. **A route or ordered sequence is also one answer, written as an
+  arrow chain**: "chorionic plate vessels &rarr; umbilical vessels &rarr; the fetal heart", never
+  "X, then Y, then Z" prose — the owner's lineage card ("paraxial mesoderm &rarr; somites &rarr;
+  myotome") is the model. *"lie between the sarcolemma and {{the basal lamina}}" was
   written two cards after "{{Z line to Z line}}" was written correctly.*
 - **The hint must be the question you meant to ask.** If you are writing a hint to fit a blank you
   already chose, you clozed by word-type instead of by answer — technical nouns *look* like answers
