@@ -60,7 +60,11 @@ basalis}}") — the entity is the named thing, and reversed, the deck never asks
 "rather than", "unlike") when the recall is X alone — the not-Y belongs in Extra as a flag
 line (`<i>**</i>flag<i>**</i>` — asterisks italicized, text plain), unless the negative is itself the fact; a parallel set whose distinguishing term is visible
 on every card of the set; a subject that does not open the sentence, or whose trailing half sits
-outside the bold; a bounded value with only one end blanked; a card that does not end on its
+outside the bold; a bounded value with only one end blanked; a blank fusing
+independent facts with commas or dashes — the fix is the chain form (subject → `<u>` link → `<i>`
+payoff, surplus to the Extra flag), and the test is whether the pieces could be asked separately,
+so a why-clause or inline set stays whole; a "The" fronting a numerous class where a bare plural
+belongs; a card that does not end on its
 answer. Where a flawed card has a correctly built twin elsewhere in the deck, say so — the fix is
 already on file.
 

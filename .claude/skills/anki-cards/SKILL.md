@@ -83,6 +83,10 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
 - `<i>` on every card; `<b>` on every card but an image card. **One subject, never two** —
   which is not the same as one `<b>` tag; see the nesting rule below.
 - Left to right the roles run **`<b>` → `<u>` → `<i>`**, and the card **ends on its answer**.
+- **The article is a claim about number.** "The" fronts a unique structure — The sternum, The
+  decidua, The cranial fold. A numerous class goes bare and plural: "Spiral arteries are…",
+  "Vertebral arches fuse…", "Ear ossicles are…". Defaulting every subject to "The" reads singular
+  grandeur onto things that occur by the dozen.
 - **The subject opens the sentence**, behind at most an article. A clause in front of it means
   either a facet standing in the wrong place — "In cross section, `<b>`skeletal muscle`</b>` fibers
   appear polygonal" wants to be "`<b>`Skeletal muscle`</b>` fibers in `<u>`cross section`</u>`
@@ -162,6 +166,21 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
 
   The first asks for a location and never asks what the protein is for. The second is the card.
   "The <b>A band</b> <u>contains</u> …" is fine by the same test — *contains* is not the fact.
+- **One recall per blank — the whole value, but ONE value.** A blank fusing independent facts with
+  commas and dashes — "{{uterine-artery branches, risen from the basal into the functional layer,
+  filling the intervillous space at arterial pressure}}" — is three recalls welded into a blob
+  nobody can produce. The owner's form is the **chain**: the sentence carries up to three blanks,
+  each wearing its role colour, so the card reads subject → link → payoff —
+
+  ```
+  {{c1::<b>Spiral arteries</b>::which arteries?}} are {{c2::<u>uterine-artery branches</u>::what?}} that {{c3::<i>fill the intervillous space at arterial pressure</i>::do what?}}
+  ```
+
+  — in a chain the middle link wears `<u>` even though it is not an either/or; the fact that does
+  not fit the chain goes to the `Extra` flag (here: `**Rise from the basal into the functional
+  layer**`), never into a longer blank. The test for a blob is **independence**: could the pieces
+  be asked separately? A rich single fact — a why-clause, an inline set, a bounded range — is one
+  recall however wordy, and stays whole.
 - **A bounded value is one answer.** "between A and B", "from X to Y", "A to B" — blanking only the
   far end hands over half the fact. *"lie between the sarcolemma and {{the basal lamina}}" was
   written two cards after "{{Z line to Z line}}" was written correctly.*
