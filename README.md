@@ -140,7 +140,9 @@ link to a slide viewer is not yet material a skill can read.
 |---|---|
 | [`method/`](method/) | the three steps — the whole method |
 | [`AGENTS.md`](AGENTS.md) | entry point for any agent or person |
-| [`.claude/skills/`](.claude/skills/) | Claude Code adapter — frontmatter and a pointer, no rules |
+| [`.claude/skills/`](.claude/skills/) | the same three method files, frontmatter added, so invoking a skill loads the rules — `method/` symlinks to these |
+| [`.claude/agents/`](.claude/agents/) | `deck-auditor` — the standing brief for the independent read of a finished deck: truth, fluency, coverage, style |
+| [`.claude/settings.json`](.claude/settings.json) + [`tools/hooks/`](tools/hooks/) | a hook that runs `check_deck.py` on every write of a `deck.json`, so the check happens whether or not anyone remembers it |
 | `coursework/<Exam>/<Subject>/<Week>/<Lecture>/` | a symlink to course material, outside this repo — plus `inventory.md`, `plan.md`, `deck.json` |
 | [`SETUP.md`](SETUP.md) | Anki, AnkiConnect, and the converters that turn source material into text |
 | [`tools/`](tools/) | turns a virtual-slide handout into card images — a converter, like `soffice`; [`tools/README.md`](tools/README.md) |

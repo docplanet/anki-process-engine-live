@@ -100,6 +100,18 @@ python3 tools/check_deck.py --transcript "coursework/.../lecture.txt" deck.json
 It looks for each card's image in Anki's `collection.media`. Point it elsewhere with
 `ANKI_MEDIA=/path/to/collection.media`, or skip that check with `--no-media`.
 
+In Claude Code the structural form of this runs by itself: a hook
+([`hooks/on_deck_write.sh`](hooks/on_deck_write.sh), wired in `.claude/settings.json`) fires it on
+every write of a `deck.json`. The full form above — media and `--transcript` — is still a step,
+because only the writer knows where the transcript is.
+
+`--transcript` checks each quote a card attributes to the lecture against the lecture's own words
+— gated on the card's `Source` saying so, because the transcript is the wrong authority for a
+slide's text. Beside the pass/fail checks it also reports, without failing, two deck-wide numbers
+no single card can show: how many prose cards carry a `<u>` facet, and which slides between the
+first and last carded one have no card at all. Both drifts shipped once; the counts are how they
+get seen.
+
 Exactly one cloze, image present and unclozed, answer in `<i>` with a hint, and nothing on the
 rendered front that names the answer. It deliberately ignores the hint — a hint
 is allowed to name the category (`which tissue?`) even when the answer ends in that word.

@@ -65,3 +65,15 @@ also runs alone, against live cards, to repair a deck already in Anki.
 invoking a skill puts its rules in context. `method/1-extract.md` and its two siblings are symlinks
 to them: one copy, two paths, nothing to drift. They used to be pointers, and a pointer is a rule an
 agent can decline to read.
+
+Two more pieces exist because a rule left to diligence eventually gets skipped by a session that
+believes the work is already clean:
+
+- **A hook** (`.claude/settings.json` → `tools/hooks/on_deck_write.sh`) runs `check_deck.py` on
+  every write of a `deck.json` and feeds the report back — the structural check is not a step
+  anyone remembers, it just happens.
+- **`.claude/agents/deck-auditor.md`** is the standing brief for step 3's independent read —
+  truth, fluency, coverage, and style against the seven reference cards. It is a file, not a
+  prompt improvised per session, because the one session that improvised it left an angle out.
+
+Neither writes a card. The judgment stays in the method; these only make its checks non-optional.
