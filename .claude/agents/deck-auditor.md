@@ -35,7 +35,10 @@ does the quote faithfully represent what the cited slide or transcript actually 
 that overstates, adds a qualifier the source lacks, invents a comparison, or attaches a quote from
 the wrong slide. Verify figure-only claims on the actual image. Flag a card that is factually
 wrong *even when it faithfully copies the slide* — and say explicitly which it is, a course error
-or a card error, because the owner needs to know whether the exam will assert it.
+or a card error. The house policy on the conflict: **biology wins the card face; the course's
+wording rides the back as a flag naming the course as the contradictor** ("the slide says…"),
+so also flag a face that repeats a course error, and a flag line that frames reality rather than
+the course as the dissenting party.
 
 **2. Fluency.** Render every cloze of every card both ways — the blank replaced by its hint, the
 siblings shown. Each front must read as English. Flag: a hint that repeats a noun already visible
