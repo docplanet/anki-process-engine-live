@@ -351,6 +351,18 @@ def main(argv):
         faceted = sum(1 for note in prose_notes if "<u>" in note["fields"]["Text"])
         print(f"facets: {faceted} of {len(prose_notes)} prose cards carry a <u>")
 
+    # Reported, not failed: a negation inside a blank is usually a contrast bolted onto the
+    # answer ("X - not Y"), which belongs in Extra as a **flag** line - but sometimes the
+    # negative IS the fact ("red blood cells do not cross"), so a script can only count.
+    # Nine live cards across three decks carried the bolted kind before anyone counted.
+    negated = [i for i, note in enumerate(notes, 1)
+               if any(re.search(r"\bnot\b|\bnever\b|rather than|instead of|unlike",
+                                re.sub(r"<[^>]+>", "", v), re.I)
+                      for _, v, _ in clozes(note["fields"]["Text"]))]
+    if negated:
+        print(f"negations inside a blank ({len(negated)} - contrast belongs in Extra "
+              f"unless the negative is the fact): " + ", ".join(f"note {i}" for i in negated))
+
     # Also reported, not failed: which slides the deck covers, read off the slide:: tags. A
     # missing card is invisible in principle - no card shows you a card that does not exist -
     # and one deck claimed full slide coverage while a slide inside its range had none. Only
