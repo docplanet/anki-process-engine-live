@@ -46,7 +46,12 @@ MAGNIFICATION = re.compile(r"\b(\d+)x\b")
 # The label form ('Source (spoken): "..."') is how real decks write their quotes - in ASCII
 # quotes, which the curly-quote forms here never matched, so for a while this check passed
 # decks it had never read. The curly forms are kept for anything older.
-QUOTED = re.compile(r"&ldquo;([\s\S]*?)&rdquo;|“([\s\S]*?)”|:\s*\"([\s\S]*?)\"")
+# Find the Source: quote in the rendered text, not the markup. Three earlier versions of this
+# pattern each matched one deck's punctuation and silently read nothing on the others - which is
+# the exact failure this check exists to catch, so it now strips tags first and accepts any pair
+# of quote marks.
+SOURCE_LABEL = re.compile(r"source:\s*(.*)", re.S)   # normalize() has lowercased by this point
+OPEN_QUOTE = "\"'"                                   # and folded the curly forms to these two
 # A quote is checked in pieces: "..." marks something left out, and "[]" marks a word repaired,
 # so neither span is expected to appear in the source verbatim.
 QUOTE_GAP = re.compile(r"\.\.\.|…|\[[^\]]*\]")
@@ -81,7 +86,11 @@ def zoom_worn_as_magnification(extra):
             if abs(float(claim) - stated) <= tolerance]
 
 
-TIMESTAMP = re.compile(r"^\d{1,2}:\d{2}:\d{2}\s*-->\s*\d{1,2}:\d{2}:\d{2}\s*$")
+# WebVTT writes "00:00:03.580 --> 00:00:04.340" and numbers each cue on its own line; Zoom's
+# plain-text export drops the milliseconds. Matching only one of those shapes leaves the other's
+# scaffolding in the word stream, where it reads as eight junk words between every utterance.
+TIMESTAMP = re.compile(r"^\d{1,2}:\d{2}(:\d{2})?[.,]?\d*\s*-->")
+CUE_INDEX = re.compile(r"^\d+$")
 SPEAKER = re.compile(r"^[^:]{1,40}:\s")
 
 
@@ -106,8 +115,15 @@ def load_transcript(path):
     """
     with open(path, encoding="utf-8", errors="replace") as handle:
         lines = handle.read().splitlines()
-    spoken = [SPEAKER.sub("", line).strip() for line in lines
-              if line.strip() and not TIMESTAMP.match(line)]
+    kept = [line.strip() for line in lines
+            if line.strip() and line.strip() != "WEBVTT"
+            and not TIMESTAMP.match(line.strip())
+            and not CUE_INDEX.match(line.strip())]
+    # Strip speaker names only from something that is actually a transcript. The same pattern run
+    # over a handout eats any "Note: ..." or "Answer: ..." label, and then a quote containing that
+    # word can never match - which read as the card lying about its source.
+    is_transcript = any(TIMESTAMP.match(line.strip()) for line in lines)
+    spoken = [SPEAKER.sub("", line) if is_transcript else line for line in kept]
     return words(normalize(" ".join(spoken)))
 
 
@@ -136,12 +152,29 @@ def find_words(fragment, transcript, start):
     return -1
 
 
+def source_quote(extra):
+    """The quoted text after 'Source:', or None when the card cites something unquoted.
+
+    Reads the rendered text rather than the markup, because the label has been written as
+    `<b>Source:</b> "..."` in some decks and `Source: &ldquo;...&rdquo;` in others, and a pattern
+    tuned to either one silently reads nothing on the other - which is this check's own failure
+    mode, not a hypothetical.
+    """
+    label = SOURCE_LABEL.search(normalize(extra))
+    if not label:
+        return None
+    rest = label.group(1).lstrip()
+    if not rest or rest[0] not in OPEN_QUOTE:
+        return None                    # a described source, not a quotation - nothing to verify
+    closing = rest.rfind(rest[0])      # rfind: the quote may contain an apostrophe
+    return rest[1:closing] if closing > 0 else rest[1:]
+
+
 def unsourced_quote_fragments(extra, transcript):
     """Pieces of the card's Source quote that are not in the transcript it claims to come from."""
-    found = QUOTED.search(extra)
-    if not found:
+    quote = source_quote(extra)
+    if quote is None:
         return []
-    quote = normalize(found.group(1) or found.group(2) or found.group(3))
     missing, cursor = [], 0
     for piece in QUOTE_GAP.split(quote):
         fragment = words(piece)
@@ -314,10 +347,12 @@ def load(path):
 
 
 def main(argv):
-    transcript_path = None
-    if "--transcript" in argv:
+    # Repeatable: a card's Source quote may come from the lecture or from the handout, and
+    # checking against only one of them fails every quote that came from the other.
+    source_paths = []
+    while "--transcript" in argv:
         position = argv.index("--transcript")
-        transcript_path = argv[position + 1]
+        source_paths.append(argv[position + 1])
         argv = argv[:position] + argv[position + 2:]
 
     args = [a for a in argv[1:] if not a.startswith("-")]
@@ -332,11 +367,13 @@ def main(argv):
         print(f"note: {MEDIA_DIR} not found - skipping the media check", file=sys.stderr)
 
     transcript = None
-    if transcript_path:
-        try:
-            transcript = load_transcript(transcript_path)
-        except OSError as error:
-            raise SystemExit(f"cannot read {transcript_path}: {error}")
+    if source_paths:
+        transcript = []
+        for path in source_paths:
+            try:
+                transcript += load_transcript(path)
+            except OSError as error:
+                raise SystemExit(f"cannot read {path}: {error}")
 
     notes = load(args[0])
     if not notes:

@@ -139,6 +139,12 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
 - **No possessives.** With the right entity there is nothing to possess, only to describe, so an
   apostrophe-s (or a "whose") means step 2 handed you the wrong entity — go back rather than patch.
 - Assert only what the source states. No added qualifier, no inference, no invented comparison.
+- **A card has no second mention.** Every structure gets its full name, every time — "the cord",
+  "the membrane", "the canal" are elisions borrowed from sources written for continuous reading,
+  where the previous sentence pins the referent. A card's reader arrives cold, mid-shuffle, in a
+  deck that may hold both cords. *Seven cards said bare "cord"; three of them meant the spinal
+  cord and three the umbilical, in the same deck.* Source quotes keep their own elisions — the
+  quote is evidence, the card is the claim.
 
 # Which spans get clozed
 
