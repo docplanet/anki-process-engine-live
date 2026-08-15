@@ -98,7 +98,12 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
   revealed cloze as its own `<span class="cloze">`, and that span sets colour on itself, so a
   colour merely *inherited* from an enclosing `<b>` is overridden and the role is lost on screen.
   A subject that a cloze boundary cuts through therefore takes **two `<b>` runs**, one inside the
-  braces and one outside. It is still one subject.
+  braces and one outside. It is still one subject — and the runs are **adjacent**, separated by
+  the cloze braces and whitespace alone. A bolded noun, an unbolded connective, and a second
+  free-standing bold phrase is two subjects on the rendered face, whatever the writer meant:
+  *eight cards in one deck shipped as "<b>noun</b> that <b>frame</b>", written once for a
+  symmetric batch and inherited card to card, and every gate passed them because none counted
+  bold runs.* The frame a subject sits in is the facet's job — mark it `<u>` or leave it plain.
 
   ```
   The {{c1::<b>A</b>::which?}} <b>band</b> is {{c2::<i>dark</i>::dark or light?}}

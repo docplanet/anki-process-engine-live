@@ -240,6 +240,34 @@ def check(note, check_media=True, transcript=None):
         if re.search(r"\w's\s", bare):
             problems.append("a possessive outside the subject; step 2 handed the wrong entity")
 
+    # One subject, literally. Two <b> runs are legal for exactly one case: a single name split by
+    # the cloze boundary ("<b>A</b> ... <b>band</b>", adjacent). A bolded noun, an unbolded
+    # connective, and a second free-standing bold phrase is TWO subjects on the rendered face -
+    # eight cards in one deck shipped that way, written once and inherited batch-wide, and every
+    # gate passed them because none counted bold runs.
+    if shape == "prose":
+        flat = CLOZE.sub(lambda m: m.group(2).partition("::")[0], text)
+        bolds = list(re.finditer(r"<b>(?:(?!</b>)[\s\S])*</b>", flat))
+        for left, right in zip(bolds, bolds[1:]):
+            gap = flat[left.end():right.start()]
+            if re.sub(r"&nbsp;|\s", "", gap):
+                problems.append(f"a second <b> run split from the subject by {gap.strip()[:24]!r}; "
+                                "one subject, one name")
+                break
+
+    # An inline series has a ceiling. ref-04 blesses "embryonic, proper, and specialized types";
+    # nine items in one <i> span is not that card, it is an unwritten list. Five or more items
+    # (4+ commas) fail; exactly four items is close enough to judgment that it is only counted,
+    # in the summary, not failed.
+    if shape == "prose" and not re.search(r"(?m)^\s*\d\.", re.sub(r"<[^>]+>", "", text)):
+        for _, value, _ in spans:
+            if IMAGE_TAG.search(value):
+                continue
+            item_commas = re.sub(r"<[^>]+>", "", value).count(",")
+            if item_commas >= 4:
+                problems.append(f"a {item_commas + 1}-item series inline; ref-05 list form")
+                break
+
     if shape == "prose":
         if "<b>" not in text:
             problems.append("no <b> subject on a card that is not a recognition card")
