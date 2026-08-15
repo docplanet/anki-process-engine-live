@@ -94,6 +94,9 @@ in a file, with every planned card accounted for, before a single note reaches A
 
 Scope is stated, never inferred. Naming the files is how you say what must be carded.
 
+**A standalone app is designed but not built** — chat interface, agent by subscription over
+ACP, the card preview as the product. The settled decisions are in [`APP.md`](APP.md).
+
 ## Why there is no code
 
 There was: 2,924 lines of Python and 80,412 characters of rulebook, orchestrating sub-agents to
