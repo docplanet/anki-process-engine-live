@@ -115,10 +115,11 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
   one belonging to the *answer phrase* travels with it. (An `<img>` is the one thing in a cloze
   wearing no role tag — ref-06.)
 - **A contrast is not part of the answer.** "X — not Y", "X rather than Y", "X, unlike Z": the
-  recall is X, and the not-Y is answer-*checking* material — put it in `Extra` as a `**flag**`
-  line above the image (literal asterisks; that is the owner's own convention on live cards, and
-  it also carries a scope or a synonym: `**In Cardiac and Skeletal muscle**`, `**also called the
-  vitelline duct**`). A blank that contains its own contrast asks the student to recite a warning
+  recall is X, and the not-Y is answer-*checking* material — put it in `Extra` as a flag
+  line above the image, written `<i>**</i>flag<i>**</i>` — literal asterisks, italicized so they
+  render in the answer colour, the text between them plain. That is the owner's own convention on
+  live cards, and the flag also carries a scope or a synonym: `**In Cardiac and Skeletal
+  muscle**`, `**also called the vitelline duct**`. A blank that contains its own contrast asks the student to recite a warning
   instead of produce a fact. *One card walked every wrong version of this: "…{{lateral plate
   mesoderm}}, not from sclerotome" trailed the cloze (fails the checker), a repair folded it into
   the blank ("{{…mesoderm — not sclerotome}}") to pass, and the owner had to fix it by hand to
