@@ -362,8 +362,15 @@ session that believed the deck was already clean.
    and style against the seven — is fixed in its definition precisely so it is not re-improvised
    each session; the one session that improvised it left style out, and the drift that angle
    would have caught reached the owner instead.
-4. **Fix** — a flag sends you back to the source, not to the markup, and the fix is a separate
-   pass that gets reviewed again. Re-run steps 1 and 2 after it.
+4. **Fix — and the writer ratifies nothing.** A flag sends you back to the source, not to the
+   markup, and the fix is a separate pass that gets reviewed again. Every finding ends in one of
+   exactly two states: **fixed**, or **approved by a context that wrote none of the cards** — a
+   fresh adjudicator given the finding, the card and its sources, or the owner. What the writer
+   may not do is accept a finding away, however reasonable the acceptance reads: the session that
+   wrote the card is judging the pattern it chose, not the card in front of it. *An auditor filed
+   a bare either/or cloze as "a design choice, noted once"; the writer — whose choice it was —
+   accepted it, and the card reached the owner still broken on every front the auditor had
+   grouped away.* Re-run steps 1 and 2 after the fixes.
 
 With the audited deck, **report `plan.md`'s `## Carried to handover` section in full — unprompted, once.** Every
 item in it exists because something was decided on the user's behalf: a term overruled, an
