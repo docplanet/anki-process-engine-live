@@ -101,6 +101,27 @@ Then mark the authored sentence up:
 
 `ENTITY → <b>` · `ASPECT → <u>` · `VALUE → <i>`
 
+The roles are not decoration — they are how the card is read at speed. The three colours draw a
+**visual triangle** on the face: subject at one corner, answer at another, the `<u>` bridge
+between them, so the relation is grasped by eye before the sentence is parsed. This is the
+owner's ruling, made card in hand: to get through this much material in this little time,
+connections have to be visually based, the right colour connecting the two terms.
+
+That gives `<u>` a second job. Beyond naming the aspect, **it is where orienting context lives on
+the face — visible, never clozed.** A phrase that matters as context but is not itself the tested
+fact used to have two destinations, `Extra` or its own card; it has a third, and often the best:
+under the underline, in the sentence, doing its work at review time.
+
+```
+The {{c1::<b>cloaca</b>::what?}} is <u>the dilated region</u> where {{c2::<i>the allantois joins the hindgut</i>::what happens?}}
+```
+
+*"The dilated region" is not worth a card, and parked in `Extra` it is invisible exactly when the
+connection is being made; underlined on the face it anchors the two clozed terms.* Context goes to
+`Extra` only when showing it would leak an answer. An underline goes **inside** a blank in one
+place only: an either/or choice (ref-03), where the choice itself is the recall — anywhere else a
+clozed `<u>` is testing the bridge instead of showing it.
+
 - `<i>` on every card; `<b>` on every card but an image card. **One subject, never two** —
   which is not the same as one `<b>` tag; see the nesting rule below.
 - Left to right the roles run **`<b>` → `<u>` → `<i>`**, and the card **ends on its answer**.
@@ -178,8 +199,9 @@ Then mark the authored sentence up:
   visible and taught the wrong default to everything measured against it.* Unwritten, the test gets
   felt rather than run, and it is always felt in the same direction.
 - **The value is the hint's answer — completely, and only.** The hint is a contract: read it,
-  then read the value as its reply. A true fact that does not answer the hint goes to `Extra` or
-  its own card. *"maintains the pregnancy alone {{c2::after the third month — the ovaries could
+  then read the value as its reply. A true fact that does not answer the hint goes to `Extra`,
+  its own card — or, when its job is orientation rather than recall, onto the face as a visible
+  `<u>` bridge. *"maintains the pregnancy alone {{c2::after the third month — the ovaries could
   then be removed::from when?}}" smuggled the evidence into the answer: "from when?" is answered
   in five words, and the ovary experiment is Extra material. This is the trailing-clause defect
   relocated inside the braces, where the position check cannot see it — and "cloze the whole
@@ -202,18 +224,23 @@ Then mark the authored sentence up:
 - **One recall per blank — the whole value, but ONE value.** A blank fusing independent facts with
   commas and dashes — "{{uterine-artery branches, risen from the basal into the functional layer,
   filling the intervillous space at arterial pressure}}" — is three recalls welded into a blob
-  nobody can produce. The owner's form is the **chain**: the sentence carries up to three blanks,
-  each wearing its role colour, so the card reads subject → link → payoff —
+  nobody can produce. The owner's form is the **chain**: subject → link → payoff, and the middle
+  link is the triangle's bridge — it wears `<u>` and **stays visible**. Show the link, test the
+  payoff. The owner's model card:
 
   ```
-  {{c1::<b>Spiral arteries</b>::which arteries?}} are {{c2::<u>uterine-artery branches</u>::what?}} that {{c3::<i>fill the intervillous space at arterial pressure</i>::do what?}}
+  {{c1::<b>Vertebral arches</b>::which structures?}} keep <u>cartilage through infancy</u> {{c2::<i>so the canal can widen with the growing spinal cord</i>::what happens?}}
+  {{c1::<b>Spiral arteries</b>::which arteries?}} are <u>uterine-artery branches</u> that {{c2::<i>fill the intervillous space at arterial pressure</i>::do what?}}
   ```
 
-  — in a chain the middle link wears `<u>` even though it is not an either/or; the fact that does
-  not fit the chain goes to the `Extra` flag (here: `**Rise from the basal into the functional
-  layer**`), never into a longer blank. The test for a blob is **independence**: could the pieces
-  be asked separately? A rich single fact — a why-clause, an inline set, a bounded range — is one
-  recall however wordy, and stays whole.
+  "Keep cartilage through infancy" is itself a fact — and it is still shown, not tested, because
+  on this card its job is orientation: it is what makes the *why* answerable. A link earns a cloze
+  only when the link itself is the one recall the card exists for, which is rare — and then it is
+  a different card, with the payoff shown. The fact that fits neither role goes to the `Extra`
+  flag (here: `**Rise from the basal into the functional layer**`), never into a longer blank.
+  The test for a blob is **independence**: could the pieces be asked separately? A rich single
+  fact — a why-clause, an inline set, a bounded range — is one recall however wordy, and stays
+  whole.
 - **A bounded value is one answer.** "between A and B", "from X to Y", "A to B" — blanking only the
   far end hands over half the fact. **A route or ordered sequence is also one answer, written as an
   arrow chain**: "chorionic plate vessels &rarr; umbilical vessels &rarr; the fetal heart", never

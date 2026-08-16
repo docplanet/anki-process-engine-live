@@ -44,7 +44,10 @@ the course as the dissenting party.
 siblings shown. Each front must read as English. Flag: a hint that repeats a noun already visible
 in the sentence; a hint that asks for nothing; a hint whose type mismatches its answer (`where?`
 answered by an enzyme); a sibling cloze that gives the hidden one away; two cards in the deck that
-render the identical front with different answers.
+render the identical front with different answers. Then read the front as the triangle the
+colours draw — subject, `<u>` bridge, answer: flag a front whose clozed terms sit with no visible
+bridge where their relation is not self-evident, and a `<u>` inside a blank anywhere but an
+either/or — the bridge is shown, never tested; a link worth testing is its own card.
 
 **3. Coverage.** Take the objectives one by one: is each answerable from these cards? Name every
 objective with no card behind it and say whether the sources themselves cover it — a gap in the
@@ -65,7 +68,7 @@ line (`<i>**</i>flag<i>**</i>` — asterisks italicized, text plain), unless the
 on every card of the set; a subject that does not open the sentence, or whose trailing half sits
 outside the bold; a bounded value with only one end blanked; a blank fusing
 independent facts with commas or dashes — the fix is the chain form (subject → `<u>` link → `<i>`
-payoff, surplus to the Extra flag), and the test is whether the pieces could be asked separately,
+payoff — the link visible, the payoff tested, surplus to the Extra flag), and the test is whether the pieces could be asked separately,
 so a why-clause or inline set stays whole; a "The" fronting a numerous class where a bare plural
 belongs; a card that does not end on its
 answer. Where a flawed card has a correctly built twin elsewhere in the deck, say so — the fix is

@@ -416,6 +416,18 @@ def main(argv):
         faceted = sum(1 for note in prose_notes if "<u>" in note["fields"]["Text"])
         print(f"facets: {faceted} of {len(prose_notes)} prose cards carry a <u>")
 
+    # Reported, not failed: an underline inside a blank is legal in exactly one place - an
+    # either/or answer (ref-03), where the choice itself is the recall. Everywhere else the
+    # owner's ruling is that <u> is visible orientation - the colour bridge between the clozed
+    # terms, shown, never tested. A chain's middle link stays visible too; a link worth testing
+    # is its own card. Report-tier only because a hint can phrase an either/or without " or ".
+    u_clozed = [i for i, note in enumerate(notes, 1)
+                if any("<u>" in value and " or " not in (hint or "")
+                       for _, value, hint in clozes(note["fields"]["Text"]))]
+    if u_clozed:
+        print(f"underlines inside a blank without an either/or hint ({len(u_clozed)} - the "
+              f"bridge is shown, never tested): " + ", ".join(f"note {i}" for i in u_clozed))
+
     # Reported, not failed: a negation inside a blank is usually a contrast bolted onto the
     # answer ("X - not Y"), which belongs in Extra as a **flag** line - but sometimes the
     # negative IS the fact ("red blood cells do not cross"), so a script can only count.
