@@ -58,7 +58,9 @@ see them.
 
 # Fidelity
 
-- **Quote verbatim.** Never tidy. A paraphrase is not a quote — "in your 20s" written as "in your
+- **Quote verbatim.** Never tidy. This binds the `quote` field alone — it is evidence.
+  It never governs card language: steps 2 and 3 write their own words, and a source's
+  elisions and rambles stop here. A paraphrase is not a quote — "in your 20s" written as "in your
   twenties" is altered, and so is a comma standing in for a full stop.
 - **Never splice two separate cues into one sentence.** Eliding with `…` is fine as long as each
   fragment is word-for-word and in order.

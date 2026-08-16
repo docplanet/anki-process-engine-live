@@ -78,6 +78,27 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
 
 # From plan to card
 
+**The plan row says what the card is about. The sentence is written fresh.** Before any markup,
+say the fact in your own words to a student who is seeing only this card — the fewest words that
+are fully precise, every structure by its full name, no diction inherited from the lecture or the
+slide. Turning source text into more compact, smarter text is the one thing the writer is best
+at; a card that could have been produced by copy-paste is a card nobody wrote.
+
+```
+source:  "it's often a sign that the kidney isn't forming well … what we call renal agenesis …
+          the urine … is just basically water"
+row:     Oligohydramnios | its renal mechanism | failed kidneys, as in renal agenesis
+card:    {{c1::<b>Renal agenesis</b>::which anomaly?}} causes {{c2::<i>oligohydramnios — fetal
+         urine is the main water source of amniotic fluid</i>::what?}}
+```
+
+The row's phrasing was circular ("a renal cause means failed kidneys"); writing the sentence
+fresh forced the real relation into view. **Faithfulness binds facts, never words**: the claim
+must be true to the source, the verbatim words live in the `Extra` quote where they are evidence,
+and the card face belongs to the writer.
+
+Then mark the authored sentence up:
+
 `ENTITY → <b>` · `ASPECT → <u>` · `VALUE → <i>`
 
 - `<i>` on every card; `<b>` on every card but an image card. **One subject, never two** —
@@ -139,12 +160,6 @@ that is how a deck ends up with the same subject on three-quarters of its cards.
 - **No possessives.** With the right entity there is nothing to possess, only to describe, so an
   apostrophe-s (or a "whose") means step 2 handed you the wrong entity — go back rather than patch.
 - Assert only what the source states. No added qualifier, no inference, no invented comparison.
-- **A card has no second mention.** Every structure gets its full name, every time — "the cord",
-  "the membrane", "the canal" are elisions borrowed from sources written for continuous reading,
-  where the previous sentence pins the referent. A card's reader arrives cold, mid-shuffle, in a
-  deck that may hold both cords. *Seven cards said bare "cord"; three of them meant the spinal
-  cord and three the umbilical, in the same deck.* Source quotes keep their own elisions — the
-  quote is evidence, the card is the claim.
 
 # Which spans get clozed
 
