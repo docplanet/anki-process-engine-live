@@ -255,7 +255,16 @@ Then mark the authored sentence up:
   prompts an action (`do what?`), offers an either/or (`raise or lower?`), asks for a definition
   (`what is it?`), or asks a cause (`why?`, whose answer is a whole clause). A two-option hint is
   *not* a leak; it makes recall fast.
-- **Hide each cloze in turn.** Nothing visible — including the sibling answers — may give it away.
+- **Hide each cloze in turn — by writing the front out, not by imagining it.** For every cloze of
+  every card, produce the front as the student sees it, the blank as `[hint?]` and everything else
+  visible, and answer two questions in a line each: *what is this front asking?* and *can anything
+  visible answer it?* Nothing visible — including the sibling answers — may give the blank away.
+  This is done in writing because it does not survive being done in the head: reading the markup,
+  the answer is always visible, so leakage is invisible — every card looks fine in the form the
+  writer reads it in. *"`[which condition?]`, or hemolytic disease of the newborn, arises when…"
+  shipped and passed review: in the markup the appositive read as fidelity to the source; on the
+  written-out front it is the answer, standing beside its own blank.* A card whose asking-line
+  cannot be stated, or whose front answers itself, does not ship.
 
 # Working
 
