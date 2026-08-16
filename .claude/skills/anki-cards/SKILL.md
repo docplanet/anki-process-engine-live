@@ -177,6 +177,13 @@ Then mark the authored sentence up:
   answer. Those cards were written against ref-04, which for a long time left a discriminating subject
   visible and taught the wrong default to everything measured against it.* Unwritten, the test gets
   felt rather than run, and it is always felt in the same direction.
+- **The value is the hint's answer — completely, and only.** The hint is a contract: read it,
+  then read the value as its reply. A true fact that does not answer the hint goes to `Extra` or
+  its own card. *"maintains the pregnancy alone {{c2::after the third month — the ovaries could
+  then be removed::from when?}}" smuggled the evidence into the answer: "from when?" is answered
+  in five words, and the ovary experiment is Extra material. This is the trailing-clause defect
+  relocated inside the braces, where the position check cannot see it — and "cloze the whole
+  value", below, is not a licence to put everything you know inside them.*
 - **Cloze the whole value**, never a fragment with the explanation left as prose. *"…because the
   thin and thick filaments never form {{sarcomeres}}" is a 1-word answer with 11 words of
   explanation visible. The seven leave scaffolding visible, never explanation.*
