@@ -44,6 +44,27 @@ pdftotext -layout converted/Lecture.pdf converted/slides.txt
 mkdir -p converted/slides && pdftoppm -jpeg -r 110 converted/Lecture.pdf converted/slides/slide
 ```
 
+**Take the speaker notes too — a PDF of slides does not have them.** The notes field is where an
+instructor puts what the slide itself does not say, and one lecture's *"I put what I want you to
+know about this slide in the note field down here"* was missed for a whole deck because neither
+`pdftotext` nor `pdftoppm` can see it:
+
+```bash
+soffice --headless --convert-to pptx --outdir converted "Lecture.ppt"
+python3 - <<'EOF' > converted/speaker-notes.txt
+import zipfile, re, html
+z = zipfile.ZipFile("converted/Lecture.pptx")
+for name in sorted((n for n in z.namelist() if re.match(r"ppt/notesSlides/notesSlide\d+\.xml$", n)),
+                   key=lambda s: int(re.search(r"\d+", s.split("/")[-1]).group())):
+    number = int(re.search(r"\d+", name.split("/")[-1]).group())
+    body = " ".join(html.unescape(t) for t in
+                    re.findall(r"<a:t>(.*?)</a:t>", z.read(name).decode("utf-8", "replace"), re.S))
+    body = re.sub(r"\s+", " ", body).replace("<number>", "").strip()
+    if len(body) > 12:
+        print(f"=== Slide {number} ===\n{body}\n")
+EOF
+```
+
 **Render the images even when the text extracts cleanly.** A histology deck is mostly
 photomicrographs and diagrams, and text baked into a figure is not in the text layer at all — a
 62-slide deck can yield barely a thousand words, all of it titles. If `slides.txt` comes out

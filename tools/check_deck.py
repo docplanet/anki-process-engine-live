@@ -190,6 +190,88 @@ def unsourced_quote_fragments(extra, transcript):
     return missing
 
 
+
+# A card face is bound to an extracted fact. That rule is in method/1-extract.md and
+# method/3-cards.md ("Faithfulness binds facts, never words" - the FACT is bound, the wording is
+# not), and until now nothing enforced it: the transcript check verifies a Source quote is real,
+# never that the card says what the quote says. Four claims reached one deck's faces that appear in
+# no inventory row at all - "the one organ", "alone among epidermal cells", "every cell of the
+# epidermis", a glassy membrane "between" two named sheaths - and every one went in during a repair
+# pass, editing an already-correct card with the inventory closed.
+FACT_TAG = re.compile(r"^fact::(F\d+)$")
+
+
+def stem(word):
+    for suffix in ("ing", "ies", "ed", "es", "s", "ly"):
+        if word.endswith(suffix) and len(word) - len(suffix) >= 4:
+            return word[:-len(suffix)]
+    return word
+INVENTORY_ROW = re.compile(r"^\|\s*(\d+)\s*\|(.*)$", re.M)
+# A fact row is the six-column form (# | fact | entity | source | quote | signal). The coverage
+# table at the foot of an inventory also opens with a bare number - its slide numbers - and read
+# as facts those rows silently replace F1..F28 with slide titles, which is how the first run of
+# this check reported 313 unbacked words, most of them words sitting in the fact it had discarded.
+FACT_ROW_CELLS = 5
+
+
+def load_inventory(path):
+    """{fact id: the words of that row} - the fact sentence and its verbatim quote together."""
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        text = handle.read()
+    facts = {}
+    for number, rest in INVENTORY_ROW.findall(text):
+        if rest.count("|") < FACT_ROW_CELLS:
+            continue
+        facts.setdefault(f"F{number}", set()).update(words(normalize(rest)))
+    return facts
+
+
+def unbacked(note, inventory):
+    """Fact ids the card cites that the inventory does not have, and face words it cannot back."""
+    cited = [m.group(1) for t in note.get("tags", []) for m in [FACT_TAG.match(t)] if m]
+    if not cited:
+        return ["carries no fact:: tag; a card face is bound to an extracted fact"], []
+    unknown = [f for f in cited if f not in inventory]
+    if unknown:
+        return [f"cites {f}, which is not in the inventory" for f in unknown], []
+    # The card's own Source quote backs it too - it is evidence the writer cited. Stems are
+    # compared, not words, or every "absorbs" for the slide's "absorbed" reads as an invention
+    # and the real ones drown in the noise: the first run of this check reported 215 words.
+    backing = {stem(w) for f in cited for w in inventory[f]}
+    backing |= {stem(w) for w in words(normalize(note["fields"].get("Extra", "") or ""))}
+    face = words(normalize(CLOZE.sub(lambda m: m.group(2).partition("::")[0],
+                                     note["fields"]["Text"])))
+    novel = [w for w in dict.fromkeys(face)
+             if len(w) > 2 and w not in FUNCTION_WORDS and stem(w) not in backing]
+    return [], novel
+
+
+def foreign(note, inventory, everything):
+    """Face words that appear nowhere in the whole inventory - not course vocabulary at all.
+
+    The per-card list below is broad by design and runs long, because re-wording is the job. This
+    is the narrow tier: a word absent from every extracted fact and every quote in the lecture was
+    not learned from the sources, and that is what an invented claim is made of.
+    """
+    _, novel = unbacked(note, inventory)
+    return [w for w in novel if stem(w) not in everything]
+
+
+# Re-wording is the point of step 3, so most new words are legitimate and this can only ever be
+# reported. These are the ones that carried the invented claims, so they are worth reading.
+FUNCTION_WORDS = {
+    "also", "already", "another", "because", "become", "becomes", "been", "before", "being",
+    "between", "both", "called", "came", "come", "comes", "does", "doing", "each", "either",
+    "from", "give", "gives", "have", "held", "hold", "holds", "into", "just", "keep", "keeps",
+    "kind", "leave", "leaves", "left", "lies", "like", "made", "make", "makes", "many", "more",
+    "most", "much", "must", "name", "named", "names", "need", "needs", "only", "other", "over",
+    "part", "puts", "reach", "run", "runs", "same", "seen", "sits", "some", "such", "take",
+    "taken", "takes", "than", "that", "their", "them", "then", "there", "these", "they", "this",
+    "those", "through", "toward", "under", "until", "used", "uses", "very", "were", "what",
+    "when", "where", "which", "while", "will", "with", "within", "without",
+}
+
+
 def shape_of(text):
     stripped = text.lstrip()
     if stripped.startswith("{{c1::<img"):
@@ -199,7 +281,7 @@ def shape_of(text):
     return "prose"
 
 
-def check(note, check_media=True, transcript=None):
+def check(note, check_media=True, transcript=None, inventory=None):
     """Return a list of problem strings for one note."""
     problems = []
     fields = note["fields"]
@@ -230,6 +312,10 @@ def check(note, check_media=True, transcript=None):
     if transcript is not None and "transcript" in fields.get("Source", "").lower():
         for fragment in unsourced_quote_fragments(extra, transcript):
             problems.append(f"quoted text is not in the transcript: {fragment!r}")
+
+    if inventory is not None:
+        broken, _ = unbacked(note, inventory)
+        problems += broken
 
     for number, value, hint in spans:
         is_image = bool(IMAGE_TAG.search(value))
@@ -355,10 +441,17 @@ def main(argv):
         source_paths.append(argv[position + 1])
         argv = argv[:position] + argv[position + 2:]
 
+    inventory_path = None
+    if "--inventory" in argv:
+        position = argv.index("--inventory")
+        inventory_path = argv[position + 1]
+        argv = argv[:position] + argv[position + 2:]
+
     args = [a for a in argv[1:] if not a.startswith("-")]
     flags = {a for a in argv[1:] if a.startswith("-")}
     if len(args) != 1 or flags - {"--no-media"}:
-        print("usage: check_deck.py [--no-media] [--transcript lecture.txt] deck.json",
+        print("usage: check_deck.py [--no-media] [--transcript lecture.txt] "
+              "[--inventory inventory.md] deck.json",
               file=sys.stderr)
         return 2
 
@@ -375,12 +468,21 @@ def main(argv):
             except OSError as error:
                 raise SystemExit(f"cannot read {path}: {error}")
 
+    inventory = None
+    if inventory_path:
+        try:
+            inventory = load_inventory(inventory_path)
+        except OSError as error:
+            raise SystemExit(f"cannot read {inventory_path}: {error}")
+        if not inventory:
+            raise SystemExit(f"{inventory_path}: no numbered fact rows found")
+
     notes = load(args[0])
     if not notes:
         print(f"{args[0]} contains no notes", file=sys.stderr)
         return 2
     findings = [(i, p) for i, note in enumerate(notes, 1)
-                for p in check(note, check_media, transcript)]
+                for p in check(note, check_media, transcript, inventory)]
 
     # On a recognition card the first non-image cloze IS the answer; on a prose card it is the
     # subject. Counting them in one column would be counting two different things.
@@ -439,6 +541,31 @@ def main(argv):
     if negated:
         print(f"negations inside a blank ({len(negated)} - contrast belongs in Extra "
               f"unless the negative is the fact): " + ", ".join(f"note {i}" for i in negated))
+
+    # Reported, not failed: face words the cited facts cannot back. Re-wording IS step 3's job -
+    # "a card that could have been produced by copy-paste is a card nobody wrote" - so most novel
+    # words are the method working, and a script cannot tell an apt synonym from an invention.
+    # What it can do is put the short list in front of the writer, which is the one thing that was
+    # never happening: the inventions all went in during repair passes, with the inventory closed.
+    if inventory is not None:
+        novel_by_note = []
+        for i, note in enumerate(notes, 1):
+            broken, novel = unbacked(note, inventory)
+            if not broken and novel:
+                novel_by_note.append((i, novel))
+        everything = {stem(w) for row in inventory.values() for w in row}
+        foreign_by_note = [(i, f) for i, note in enumerate(notes, 1)
+                           for f in [foreign(note, inventory, everything)] if f]
+        total = sum(len(n) for _, n in novel_by_note)
+        print(f"words a card's own cited facts do not carry: {total} across "
+              f"{len(novel_by_note)} cards (re-wording is the job; this is context, not a list "
+              f"to work through)")
+        if foreign_by_note:
+            count = sum(len(n) for _, n in foreign_by_note)
+            print(f"words appearing NOWHERE in the inventory ({count} across "
+                  f"{len(foreign_by_note)} cards - read every one):")
+            for i, f in foreign_by_note:
+                print(f"    note {i}: " + ", ".join(f))
 
     # Also reported, not failed: which slides the deck covers, read off the slide:: tags. A
     # missing card is invisible in principle - no card shows you a card that does not exist -

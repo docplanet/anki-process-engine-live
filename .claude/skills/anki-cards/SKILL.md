@@ -181,6 +181,14 @@ clozed `<u>` is testing the bridge instead of showing it.
 - **No possessives.** With the right entity there is nothing to possess, only to describe, so an
   apostrophe-s (or a "whose") means step 2 handed you the wrong entity — go back rather than patch.
 - Assert only what the source states. No added qualifier, no inference, no invented comparison.
+- **Every note carries the inventory fact it was written from, as a `fact::F12` tag** — one per
+  fact the card draws on. This is the only mechanical binding between a card face and the
+  extraction, and it exists because there was none: the transcript check verifies that a `Source:`
+  quote is real, never that the card says what the quote says. *Four claims reached one deck's
+  faces that appear in no inventory row at all — "the one organ", "alone among epidermal cells",
+  "every cell of the epidermis", a glassy membrane "between" two named sheaths — and **every one
+  went in during a repair pass**, editing an already-correct card with the inventory closed. The
+  rule was never misunderstood; it was never in front of anyone at the moment it applied.*
 
 # Which spans get clozed
 
@@ -414,9 +422,12 @@ write of a `deck.json`, so its report arrives whether or not anyone remembers to
 exist because every one of them was once left to memory, and each was eventually forgotten by a
 session that believed the deck was already clean.
 
-1. **Check** — `python3 tools/check_deck.py --transcript <lecture.txt> deck.json` — the full form:
-   media staged, every `Source:` quote found in the transcript it is attributed to. Must end
-   `clean`. Read the report lines above the verdict too: the facet count and the slide coverage
+1. **Check** — `python3 tools/check_deck.py --transcript <lecture.txt> --inventory inventory.md
+   deck.json` — the full form: media staged, every `Source:` quote found in the transcript it is
+   attributed to, every card carrying a fact id the inventory has. Must end `clean`. **Read the
+   "words appearing NOWHERE in the inventory" list in full** — it is short, and a word the
+   extraction never learned is what an invented claim is built out of. A deliberate override of
+   the course belongs there and should already carry its flag; anything else is a card to reopen. Read the report lines above the verdict too: the facet count and the slide coverage
    are reported rather than failed, and a cliff in either is a finding even when the verdict says
    clean — one deck shipped 11 facets across 125 cards against a plan that named 93, and another
    claimed full slide coverage over a slide with no card.

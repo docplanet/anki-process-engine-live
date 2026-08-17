@@ -84,6 +84,15 @@ see them.
   slide is also on screen. Never cite a slide that does not state the fact.
 - Slide text inside a rasterised figure will not extract as text. Read it visually and record it —
   and note that automated checks against the text layer will not find it.
+- **A slide deck's speaker-notes field is a source, and it is invisible in every rendering of the
+  slides.** Convert to `.pptx` and read `ppt/notesSlides/` — `SETUP.md` has the command. Do this
+  before reading the slides, not after, because the notes routinely carry the figure's label key
+  and the paragraph the slide only gestures at. *One lecture's notes gave the mechanism the
+  instructor twice said to know, named the receptors a caption abbreviated, and were the only place
+  in the folder that wrote out three terms a deck had guessed from initials — and they were missed
+  because the conversion recipe produces a PDF, which has no notes field. The instructor had said
+  aloud, on that slide, "I put what I want you to know about this slide in the note field down
+  here."*
 - **A fact with no resolvable source does not enter the inventory.**
 
 # Coverage — the step that matters most
