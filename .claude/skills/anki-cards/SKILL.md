@@ -122,6 +122,35 @@ connection is being made; underlined on the face it anchors the two clozed terms
 place only: an either/or choice (ref-03), where the choice itself is the recall — anywhere else a
 clozed `<u>` is testing the bridge instead of showing it.
 
+**What wears the underline is the facet, not the verb that reaches it.** Ask what the card is
+about *with respect to* — fasting with respect to cholesterol synthesis, insulin with respect to
+HMG-CoA reductase — and that is the noun standing after the verb, not the verb. A transitive verb
+is the nearest markup-shaped word to hand once the sentence exists, so reaching for it lands the
+underline one word to the left of the bridge, every time and in the same direction:
+
+```
+{{c1::<b>Fasting</b>::which state?}} <u>lowers</u> cholesterol synthesis because {{c2::…}}
+{{c1::<b>Fasting</b>::which state?}} lowers <u>cholesterol synthesis</u> because {{c2::…}}
+{{c1::<b>Insulin</b>::which hormone?}} <u>drives</u> HMG-CoA reductase toward {{c2::…}}
+{{c1::<b>Insulin</b>::which hormone?}} drives <u>HMG-CoA reductase</u> toward {{c2::…}}
+```
+
+An aspect named in a single word — ref-02's `<u>function</u>`, ref-04's `<u>classified</u>`,
+ref-05's `<u>zones</u>` — is that same bridge said briefly, and stays right. The test is whether
+the word names the **facet** or merely carries the **relation**: *classified* is what the card is
+asking about, while *lowers* is only how the subject gets to its answer. A condition passes the
+same test and is a bridge too — `<u>when iron is scarce</u>`, `<u>while cholesterol is
+plentiful</u>` — because it is the respect in which the claim holds.
+
+**A definition card has no bridge and takes no underline.** ref-01 is subject, copula, answer,
+with nothing standing between the two corners, so there is nothing to mark; ref-01 carries no
+`<u>` for exactly this reason. Reaching for one anyway is what puts an underline on a bare copula,
+or on *lacks*, or on *is absent from*. An empty aspect is not a gap to fill — the rule step 2
+applies to its ASPECT column does not stop applying once the sentence is written. *A 78-card deck
+underlined the connecting verb on thirteen cards and left the facet unmarked on seventeen more;
+both halves of that were one habit — marking up the word the sentence offered rather than the word
+the card turned on, and neither half is visible until someone reads the rendered faces.*
+
 - `<i>` on every card; `<b>` on every card but an image card. **One subject, never two** —
   which is not the same as one `<b>` tag; see the nesting rule below.
 - Left to right the roles run **`<b>` → `<u>` → `<i>`**, and the card **ends on its answer**.
@@ -227,8 +256,10 @@ clozed `<u>` is testing the bridge instead of showing it.
   {{c1::<b>Tropomodulin</b>::which protein?}} {{c2::<i>caps the free end of the actin filament</i>::does what?}}
   ```
 
-  The first asks for a location and never asks what the protein is for. The second is the card.
-  "The <b>A band</b> <u>contains</u> …" is fine by the same test — *contains* is not the fact.
+  The first asks for a location and never asks what the protein is for — and it underlines a bare
+  connecting verb besides, which the facet rule above rejects on its own. The second is the card.
+  "The <b>A band</b> contains …" is fine by the same test — *contains* is not the fact, so it stays
+  outside the braces; by that rule it stays outside the underline too.
 - **One recall per blank — the whole value, but ONE value.** A blank fusing independent facts with
   commas and dashes — "{{uterine-artery branches, risen from the basal into the functional layer,
   filling the intervillous space at arterial pressure}}" — is three recalls welded into a blob
