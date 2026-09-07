@@ -46,6 +46,17 @@ One entry per fact:
 Facts, not sentences. If a bullet lists two independent properties, that is two entries. If a list
 is itself the thing to be recalled — the three classes, the five zones — that is one.
 
+**Write it as one table, and number the rows.** The inventory is a single markdown table —
+`# | fact | entity | source | quote | image | signal` — with the row number, a plain integer, in
+the first column, counting 1, 2, 3 … through the whole inventory whatever headings sit between
+its sections. That number is the fact's name from here on: step 3 tags every card `fact::F<n>`,
+and the deck check reads the row back by that number to test that the card says what the row
+says. A letter in the number — `A1`, `B3` — or a count that restarts at each section breaks the
+binding: the check finds no fact rows and the cross-check silently does not run. *A muscle
+inventory once numbered by section; its 175 cards carried `fact::A1`-style tags that nothing could
+read back.* No other table in the file may open with a bare number in its first column — a
+coverage table that lists slides by number reads as fact rows and displaces them.
+
 # Emphasis
 
 Weight by what the lecturer **stressed**, not by word count: phrases marking something as required
