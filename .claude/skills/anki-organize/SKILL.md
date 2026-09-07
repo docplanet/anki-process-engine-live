@@ -121,6 +121,38 @@ a fact onto a subject that is not its subject:
   it. The slide was an outline but the line was a fact, and no card in the plan contained the word
   cytosol at all — the storage half was covered three times and the destination not once.*
 
+# How wide the deck goes
+
+The deck's width is not a number chosen ahead of time. There is no way to know, before the
+material is read, whether a lecture earns twenty cards or two hundred — a short lecture read
+closely and a three-hour one read the same way are both right. Width is **derived**, twice: once
+from the material, once from the student's time.
+
+**From the material: emphasis is the tier.** Every fact that passed *What earns a card* is a card;
+the coverage floor put it there. What emphasis adds is a tier on every planned row:
+
+- `core` — the lecturer **explicitly signalled it as need-to-know**: it is a stated objective, it
+  is on the exam list he read out, it is on a slide he said to know in detail, he repeated it aloud
+  or said "remember". Name the signal on the row, the way a cut names its reason.
+- `plus` — taught, true, and discriminating, but never signalled. The floor earned it a card;
+  emphasis did not.
+
+A tier is a checkable claim about the lecturer, not a judgment about the fact. A `plus` row on a
+slide he said to know cold is wrong; a `core` row whose only evidence is that the fact is
+interesting is wrong the same way.
+
+**From the time: what fits, when the student has said.** If the student has given the exam date
+and the review time available, the deck that goes in is what can be reviewed at the student's own
+rate by then — `core` first, `plus` after it if time remains. If even `core` will not fit, do not
+thin every topic evenly; **cut whole low-yield sections from `core`** — material the instructor
+deferred to another lecture, abstracts assigned for self-reading, revision carried over from an
+earlier week — and record each in the handover. If the student has said nothing about time, the
+tiers stand as written and the choice of what to insert is theirs at step 3.
+
+*A skin deck was once rejected on sight as more than could be reviewed before the test. The fix
+was tiers, not deletion: nothing the lecturer taught was thrown away, and nothing he did not
+stress stood between the student and what he did.*
+
 # Two facts or one
 
 Two independent properties are two cards, however the slide punctuated them — "many mitochondria
@@ -163,8 +195,9 @@ over from last week. Slides the lecture never reached belong to the next deck.
 # Handing off
 
 Write the plan to **`<folder>/plan.md`** — the deck name carried over from `inventory.md`, then the
-planned cards as `ENTITY | ASPECT | VALUE | source` — or `IMAGE | ANSWER | source` for a
-recognition deck, with the ref-06/ref-07 decision at the top — and the cuts under `## Cut`.
+planned cards as `ENTITY | ASPECT | VALUE | source | tier` — or `IMAGE | ANSWER | source | tier`
+for a recognition deck, with the ref-06/ref-07 decision at the top — and the cuts under `## Cut`.
+The tier is `core` or `plus` with its signal (see *How wide the deck goes*).
 
 Then **copy `inventory.md`'s `## Carried to handover` section forward, verbatim, and append to
 it** — do not summarise it, and do not drop an item because it looks handled. Add:

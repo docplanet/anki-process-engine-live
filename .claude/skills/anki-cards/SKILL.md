@@ -382,6 +382,14 @@ before creating a sibling. Tag every card `<course>::<subject>::<topic>`, `test:
 Slide images go into `collection.media` as `<course>-<slug>-slide-NN.jpg`. The `tools/` scripts
 emit their own working names; rename on the way in, when you `storeMediaFile`.
 
+**Tiers.** Every card carries its plan row's tier as a tag, `yield::core` or `yield::plus`
+(step 2, *How wide the deck goes*). Write both tiers into `deck.json` — the plus cards are finished
+cards, checked and rendered like the rest. What goes into Anki is what the student's time allows,
+as the plan's handover records it: `core` first, `plus` after it when there is time, or when the
+student has said nothing about time and wants everything. A `plus` card left in `deck.json` is not
+lost; it is waiting for the days after the test. If a tiered deck is already live and the student
+wants only `core` for now, `yield::plus` cards are suspended, not deleted.
+
 **On a recognition card the image goes in `Text`, not `Extra`.** `Extra` renders on the back only,
 so an image parked there is invisible exactly when it is the question. On ref-06 it is inside the
 `c1` cloze; on ref-07 it sits ahead of the sentence, unclozed. What `Extra` carries instead is
