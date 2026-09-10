@@ -1,7 +1,7 @@
 # Working in this repo
 
 This turns course material into Anki cloze cards. **There is no program to run.** The method is
-three markdown files, meant to be read and followed — by an agent in any harness, or by a person
+four markdown files, meant to be read and followed — by an agent in any harness, or by a person
 with no agent at all.
 
 ## What you need
@@ -40,8 +40,9 @@ Read these in order. Each one ends by handing off to the next.
 | | | produces |
 |---|---|---|
 | 1 | [`method/1-extract.md`](method/1-extract.md) | `inventory.md` — every fact, with a verbatim quote and its source |
-| 2 | [`method/2-organize.md`](method/2-organize.md) | `plan.md` — one line per card as `ENTITY \| ASPECT \| VALUE \| source`, plus every cut and why |
+| 2 | [`method/2-organize.md`](method/2-organize.md) | `plan.md` — one line per card as `ENTITY \| ASPECT \| VALUE \| source \| tier`, plus every cut and why |
 | 3 | [`method/3-cards.md`](method/3-cards.md) | `deck.json`, then the notes in Anki |
+| 4 | [`method/4-audit.md`](method/4-audit.md) | findings on the finished deck, filed by a reader who wrote none of it. It edits nothing |
 
 **Do not skip to step 3.** Going straight from a source to a card makes the card inherit the source
 sentence's shape; the split exists to stop that, and the reasoning is in the README.
@@ -72,8 +73,11 @@ believes the work is already clean:
 - **A hook** (`.claude/settings.json` → `tools/hooks/on_deck_write.sh`) runs `check_deck.py` on
   every write of a `deck.json` and feeds the report back — the structural check is not a step
   anyone remembers, it just happens.
-- **`.claude/agents/deck-auditor.md`** is the standing brief for step 3's independent read —
-  truth, fluency, coverage, and style against the seven reference cards. It is a file, not a
-  prompt improvised per session, because the one session that improvised it left an angle out.
+- **`.claude/agents/deck-auditor.md`** is the standing brief for step 4 — truth, fluency,
+  coverage, and style against the seven reference cards. It is a file, not a prompt improvised per
+  session, because the one session that improvised it left an angle out, and it is reachable as
+  `method/4-audit.md` so a harness without subagents can still run it. A reader who saw only the
+  cards someone already suspected is not this step: the whole deck goes past fresh eyes, or the
+  defect class that nobody suspected stays in.
 
 Neither writes a card. The judgment stays in the method; these only make its checks non-optional.

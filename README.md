@@ -25,19 +25,21 @@ and get reviewed Anki cloze cards in that deck.
 
 ## Three steps, in order
 
-There is no program to run. The work is three markdown files, and the order is the point.
+There is no program to run. The work is four markdown files, and the order is the point.
 
 | | | produces |
 |---|---|---|
 | 1 | [`method/1-extract.md`](method/1-extract.md) | `inventory.md` — every fact, with a verbatim quote and its source. No markup. |
-| 2 | [`method/2-organize.md`](method/2-organize.md) | `plan.md` — one line per card as `ENTITY \| ASPECT \| VALUE \| source`, plus every cut and its reason. |
+| 2 | [`method/2-organize.md`](method/2-organize.md) | `plan.md` — one line per card as `ENTITY \| ASPECT \| VALUE \| source \| tier`, plus every cut and its reason. |
 | 3 | [`method/3-cards.md`](method/3-cards.md) | `deck.json` — the notes as they will be inserted, then the notes in Anki. |
+| 4 | [`method/4-audit.md`](method/4-audit.md) | findings — an independent read of the finished deck by someone who wrote none of it. Nothing is edited. |
 
 **Nothing here is tied to one assistant.** The method is prose: an agent in any harness can read it,
 and so can you. It needs Anki with the AnkiConnect add-on — an HTTP endpoint anything can POST to —
 and the `Custom Cloze` note type, which [`SETUP.md`](SETUP.md) creates in one command. [`AGENTS.md`](AGENTS.md) is the entry point;
-[`.claude/skills/`](.claude/skills/) holds those same three files, so they trigger automatically in
-Claude Code and arrive with their rules — the `method/` paths above are symlinks to them. One copy,
+[`.claude/skills/`](.claude/skills/) holds the first three, so they trigger automatically in
+Claude Code and arrive with their rules, and [`.claude/agents/`](.claude/agents/) holds the fourth —
+the `method/` paths above are symlinks to them. One copy,
 two names.
 
 Each step writes its artifact into the lecture folder and hands off to the next, so a session can
@@ -94,8 +96,10 @@ in a file, with every planned card accounted for, before a single note reaches A
 
 Scope is stated, never inferred. Naming the files is how you say what must be carded.
 
-**A standalone app is designed but not built** — chat interface, agent by subscription over
-ACP, the card preview as the product. The settled decisions are in [`APP.md`](APP.md).
+**A standalone app now exists** — chat interface, agent by subscription over ACP or any model by
+API key, the card preview as the product. It bundles these four files unmodified and reads them;
+improving the method never means rebuilding it. The settled decisions are in [`APP.md`](APP.md),
+and the build is [its own repository](https://github.com/docplanet/ape-go-bananas).
 
 ## Why there is no code
 
@@ -141,10 +145,10 @@ link to a slide viewer is not yet material a skill can read.
 
 | | |
 |---|---|
-| [`method/`](method/) | the three steps — the whole method |
+| [`method/`](method/) | the four steps — the whole method |
 | [`AGENTS.md`](AGENTS.md) | entry point for any agent or person |
-| [`.claude/skills/`](.claude/skills/) | the same three method files, frontmatter added, so invoking a skill loads the rules — `method/` symlinks to these |
-| [`.claude/agents/`](.claude/agents/) | `deck-auditor` — the standing brief for the independent read of a finished deck: truth, fluency, coverage, style |
+| [`.claude/skills/`](.claude/skills/) | the first three method files, frontmatter added, so invoking a skill loads the rules — `method/` symlinks to these |
+| [`.claude/agents/`](.claude/agents/) | `deck-auditor` — the standing brief for the independent read of a finished deck: truth, fluency, coverage, style. `method/4-audit.md` symlinks to it |
 | [`.claude/settings.json`](.claude/settings.json) + [`tools/hooks/`](tools/hooks/) | a hook that runs `check_deck.py` on every write of a `deck.json`, so the check happens whether or not anyone remembers it |
 | `coursework/<Exam>/<Subject>/<Week>/<Lecture>/` | a symlink to course material, outside this repo — plus `inventory.md`, `plan.md`, `deck.json` |
 | [`SETUP.md`](SETUP.md) | Anki, AnkiConnect, and the converters that turn source material into text |

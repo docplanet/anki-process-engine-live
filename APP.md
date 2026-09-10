@@ -1,7 +1,10 @@
 # Design: a standalone app around this engine
 
-*Status: design only. Nothing in this document is built. It exists so the decisions below — settled
-in discussion — outlive the conversation that settled them.*
+*Status: built, and released for macOS, Windows and Linux — the design below is what it was built
+to, and it exists so the decisions, settled in discussion, outlive the conversation that settled
+them. The app is [docplanet/ape-go-bananas](https://github.com/docplanet/ape-go-bananas); its own
+`docs/APP.md` is the build log, including where the build departed from this page. This repository
+stays what it was: the method, as prose, plus the checks. No card-writing logic lives in app code.*
 
 ## What it is
 

@@ -464,9 +464,16 @@ session that believed the deck was already clean.
 1. **Check** — `python3 tools/check_deck.py --transcript <lecture.txt> --inventory inventory.md
    deck.json` — the full form: media staged, every `Source:` quote found in the transcript it is
    attributed to, every card carrying a fact id the inventory has. Must end `clean`. **Read the
-   "words appearing NOWHERE in the inventory" list in full** — it is short, and a word the
-   extraction never learned is what an invented claim is built out of. A deliberate override of
-   the course belongs there and should already carry its flag; anything else is a card to reopen. Read the report lines above the verdict too: the facet count and the slide coverage
+   "words appearing NOWHERE in the inventory" list in full, and read it for claims, not for
+   words.** An invented claim shows up here — but so does most of the job being done, because a
+   card is written to be memorised, not to transcribe: the term the exam will use beats the term
+   that happened to be said. *One deck's list ran to 79 words, and the ones worth the read were
+   "pale" (inferred from a row that said euchromatic) and "depolarization" (the lecturer said
+   electrical impulse); "unbranched" for "there's no branches", "intestinal" for "intestine" and
+   "centimeters" for the table's "cm" were the writer doing its work.* Reopen a card when the word
+   carries a claim no cited row makes — a mechanism, a number, a comparison, a qualifier. A
+   deliberate override of the course belongs in the list too, and should already carry its flag.
+   Read the report lines above the verdict too: the facet count and the slide coverage
    are reported rather than failed, and a cliff in either is a finding even when the verdict says
    clean — one deck shipped 11 facets across 125 cards against a plan that named 93, and another
    claimed full slide coverage over a slide with no card.
