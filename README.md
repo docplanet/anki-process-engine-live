@@ -37,9 +37,9 @@ There is no program to run. The work is four markdown files, and the order is th
 **Nothing here is tied to one assistant.** The method is prose: an agent in any harness can read it,
 and so can you. It needs Anki with the AnkiConnect add-on — an HTTP endpoint anything can POST to —
 and the `Custom Cloze` note type, which [`SETUP.md`](SETUP.md) creates in one command. [`AGENTS.md`](AGENTS.md) is the entry point;
-[`.claude/skills/`](.claude/skills/) holds the first three, so they trigger automatically in
-Claude Code and arrive with their rules, and [`.claude/agents/`](.claude/agents/) holds the fourth —
-the `method/` paths above are symlinks to them. One copy,
+the `method/` paths above are the files themselves, so fetching one gets the method and not a
+pointer; [`.claude/skills/`](.claude/skills/) and [`.claude/agents/`](.claude/agents/) symlink to
+them, which is what makes the first three trigger automatically in Claude Code. One copy,
 two names.
 
 Each step writes its artifact into the lecture folder and hands off to the next, so a session can
@@ -127,8 +127,8 @@ card *is*, and with seven worked examples, before it lists a single constraint.
 **A rule that has to be fetched is a rule that can be skipped.** The three skills used to be
 eleven-line pointers at `method/`. An agent invoked one, said it had read the method, and built a
 284-card deck on the wrong unit of extraction — and the file it skipped names that exact defect in
-its second paragraph. The fix needed no code either: the skills now *are* the method files, and
-`method/` holds symlinks back to them. Nothing to fetch, nothing to claim having fetched.
+its second paragraph. The fix needed no code either: the skills now *are* the method files, reached
+by symlink from `.claude/`. Nothing to fetch, nothing to claim having fetched.
 
 Counting cards is not how you check them. A measured ratio — how many carry two clozes, how many
 use a facet — describes whatever deck you measured, and a deck built by a broken process measures
@@ -147,8 +147,8 @@ link to a slide viewer is not yet material a skill can read.
 |---|---|
 | [`method/`](method/) | the four steps — the whole method |
 | [`AGENTS.md`](AGENTS.md) | entry point for any agent or person |
-| [`.claude/skills/`](.claude/skills/) | the first three method files, frontmatter added, so invoking a skill loads the rules — `method/` symlinks to these |
-| [`.claude/agents/`](.claude/agents/) | `deck-auditor` — the standing brief for the independent read of a finished deck: truth, fluency, coverage, style. `method/4-audit.md` symlinks to it |
+| [`.claude/skills/`](.claude/skills/) | symlinks to the first three method files, so invoking a skill loads the whole method — the frontmatter it needs is in the file itself |
+| [`.claude/agents/`](.claude/agents/) | `deck-auditor` — a symlink to `method/4-audit.md`, the standing brief for the independent read of a finished deck: truth, fluency, coverage, style |
 | [`.claude/settings.json`](.claude/settings.json) + [`tools/hooks/`](tools/hooks/) | a hook that runs `check_deck.py` on every write of a `deck.json`, so the check happens whether or not anyone remembers it |
 | `coursework/<Exam>/<Subject>/<Week>/<Lecture>/` | a symlink to course material, outside this repo — plus `inventory.md`, `plan.md`, `deck.json` |
 | [`SETUP.md`](SETUP.md) | Anki, AnkiConnect, and the converters that turn source material into text |

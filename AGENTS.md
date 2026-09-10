@@ -62,10 +62,11 @@ also runs alone, against live cards, to repair a deck already in Anki.
 
 ## If you are Claude Code
 
-`.claude/skills/` holds the three method files themselves — frontmatter plus the full method — so
-invoking a skill puts its rules in context. `method/1-extract.md` and its two siblings are symlinks
-to them: one copy, two paths, nothing to drift. They used to be pointers, and a pointer is a rule an
-agent can decline to read.
+`.claude/skills/` symlinks to the first three method files, so invoking a skill puts the whole
+method in context — frontmatter and all, since that lives in the file itself. `method/` holds the
+real files: one copy, two paths, nothing to drift, and a `method/` URL that serves the method
+rather than the name of another file. They used to be pointers, and a pointer is a rule an agent
+can decline to read.
 
 Two more pieces exist because a rule left to diligence eventually gets skipped by a session that
 believes the work is already clean:
@@ -74,9 +75,10 @@ believes the work is already clean:
   every write of a `deck.json` and feeds the report back — the structural check is not a step
   anyone remembers, it just happens.
 - **`.claude/agents/deck-auditor.md`** is the standing brief for step 4 — truth, fluency,
-  coverage, and style against the seven reference cards. It is a file, not a prompt improvised per
-  session, because the one session that improvised it left an angle out, and it is reachable as
-  `method/4-audit.md` so a harness without subagents can still run it. A reader who saw only the
+  coverage, and style against the seven reference cards. It lives at `method/4-audit.md`, with
+  `.claude/agents/` symlinking to it, so a harness without subagents can still run it. It is a
+  file, not a prompt improvised per session, because the one session that improvised it left an
+  angle out. A reader who saw only the
   cards someone already suspected is not this step: the whole deck goes past fresh eyes, or the
   defect class that nobody suspected stays in.
 
