@@ -42,8 +42,11 @@ the course as the dissenting party.
 
 **2. Fluency.** Render every cloze of every card both ways — the blank replaced by its hint, the
 siblings shown. Each front must read as English. Flag: a hint that repeats a noun already visible
-in the sentence; a hint that asks for nothing; a hint whose type mismatches its answer (`where?`
-answered by an enzyme); a sibling cloze that gives the hidden one away; two cards in the deck that
+in the sentence; a hint that asks for nothing; a hint that is a question of its own rather than
+the slot's grammar (`what is it?`, `what happens?` — the front stops reading where they stand);
+a hint whose type mismatches its answer (`where?`
+answered by an enzyme); a set or a pair of alternatives whose hint does not say how many
+(`which two?`, not `which elements?`); a sibling cloze that gives the hidden one away; two cards in the deck that
 render the identical front with different answers. Then read the front as the triangle the
 colours draw — subject, `<u>` bridge, answer: flag a front whose clozed terms sit with no visible
 bridge where their relation is not self-evident, and a `<u>` inside a blank anywhere but an
@@ -71,7 +74,8 @@ independent facts with commas or dashes — the fix is the chain form (subject �
 payoff — the link visible, the payoff tested, surplus to the Extra flag), and the test is whether the pieces could be asked separately,
 so a why-clause or inline set stays whole; a "The" fronting a numerous class where a bare plural
 belongs; a card that does not end on its
-answer. Where a flawed card has a correctly built twin elsewhere in the deck, say so — the fix is
+answer, or that carries a second property of the subject after the answer under a further cloze
+number (", and it can lie…", "; … then releases it…") — two rows of the plan in one card. Where a flawed card has a correctly built twin elsewhere in the deck, say so — the fix is
 already on file.
 
 # Reporting

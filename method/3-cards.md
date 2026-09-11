@@ -30,7 +30,7 @@ check that fails ref-06 or ref-07 has not understood recognition cards; a check 
 these seven would reject is not checking the right thing.
 
 ```
-ref-01  {{c1::<b>Osteoid</b>::what?}} is {{c2::<i>unmineralized bone matrix</i>::what is it?}}
+ref-01  {{c1::<b>Osteoid</b>::what?}} is {{c2::<i>unmineralized bone matrix</i>::what?}}
 
 ref-02  {{c1::<b>Osteoclasts</b>::which cells?}} <u>function</u> to {{c2::<i>resorb bone matrix</i>::do what?}}
 
@@ -113,7 +113,7 @@ fact used to have two destinations, `Extra` or its own card; it has a third, and
 under the underline, in the sentence, doing its work at review time.
 
 ```
-The {{c1::<b>cloaca</b>::what?}} is <u>the dilated region</u> where {{c2::<i>the allantois joins the hindgut</i>::what happens?}}
+The {{c1::<b>cloaca</b>::what?}} is <u>the dilated region</u> where {{c2::<i>the allantois joins the hindgut</i>::what joins what?}}
 ```
 
 *"The dilated region" is not worth a card, and parked in `Extra` it is invisible exactly when the
@@ -154,6 +154,13 @@ the card turned on, and neither half is visible until someone reads the rendered
 - `<i>` on every card; `<b>` on every card but an image card. **One subject, never two** —
   which is not the same as one `<b>` tag; see the nesting rule below.
 - Left to right the roles run **`<b>` → `<u>` → `<i>`**, and the card **ends on its answer**.
+- **One property per card, and nothing after the answer.** A second clause after the payoff —
+  ", and it can lie near or far from the operon it regulates", "; allolactose binding then
+  releases it from the operator" — is a second card, however tightly the source ran the two
+  together, and giving it a third cloze number does not make it one. Two rows of the plan never
+  share a card. *Both shipped in one deck: a regulatory gene's product and its location in one
+  sentence under three blanks, and the repressor's binding and its release likewise. Each is two
+  cards, and the second half of each was the plan's own next row.*
 - **The article is a claim about number.** "The" fronts a unique structure — The sternum, The
   decidua, The cranial fold. A numerous class goes bare and plural: "Spiral arteries are…",
   "Vertebral arches fuse…", "Ear ossicles are…". Defaulting every subject to "The" reads singular
@@ -179,7 +186,7 @@ the card turned on, and neither half is visible until someone reads the rendered
   ```
   The {{c1::<b>A</b>::which?}} <b>band</b> is {{c2::<i>dark</i>::dark or light?}}
   {{c1::<b>Type IIb</b>::which?}} <b>muscle fibers</b> have the {{c2::<u>fewest</u>::most or fewest?}} {{c3::<i>mitochondria</i>::which organelle?}}
-  The {{c1::<b>sarcomere</b>::which unit?}} is the {{c2::<i>functional unit of contraction</i>::what is it?}}
+  The {{c1::<b>sarcomere</b>::which unit?}} is the {{c2::<i>functional unit of contraction</i>::what?}}
   ```
 
   *Written as `<b>{{c1::A::which?}} band</b>` it reads correctly in the source and renders wrong:
@@ -268,7 +275,7 @@ the card turned on, and neither half is visible until someone reads the rendered
   payoff. The owner's model card:
 
   ```
-  {{c1::<b>Vertebral arches</b>::which structures?}} keep <u>cartilage through infancy</u> {{c2::<i>so the canal can widen with the growing spinal cord</i>::what happens?}}
+  {{c1::<b>Vertebral arches</b>::which structures?}} keep <u>cartilage through infancy</u> {{c2::<i>so the canal can widen with the growing spinal cord</i>::why?}}
   {{c1::<b>Spiral arteries</b>::which arteries?}} are <u>uterine-artery branches</u> that {{c2::<i>fill the intervillous space at arterial pressure</i>::do what?}}
   ```
 
@@ -309,6 +316,21 @@ the card turned on, and neither half is visible until someone reads the rendered
   item 1's). Those two carve-outs are the whole exception list.
 - Questions ending in `?`, one to three words, no commas, reading as natural English substituted
   into the blank.
+- **The hint is a slot, not a sentence.** It stands where the answer stands and takes the grammar
+  of that place: a noun slot takes `what?`, `which enzyme?`, `where?`, `how many?`; a verb slot
+  takes `does what?`; a because-slot takes `why?`. A hint that is a question on its own — `what is
+  it?`, `what happens?`, `what does it do?` — drops a sentence into a sentence, and the front stops
+  reading. *"A coactivator is [what is it?]" and "so the lac operon [what happens?]" both shipped
+  in one deck; the hints are `what?` and `does what?`.* A front the student has to parse before
+  answering trains parsing, not recall: the connection has to be instant, and a hint that makes
+  the student work out what is being asked has already failed.
+- **The hint tells the shape of the answer before the student starts.** A set carries its count
+  (`which three classes?`, ref-04); an either/or says so (`raise or lower?`); an answer that is
+  two alternatives says both things at once — `which two?`. *"binds promoter elements such as
+  [which elements?]" was answered by "the TATA box or the Inr, the initiator box": how many, and
+  whether both were wanted, was left for the student to guess, and a gloss rode inside the blank.
+  The hint is `which two?`, and "the initiator box" is Extra material.* The hint's job is to
+  leave the answer as the only thing still to produce.
 - **The hint supplies exactly what the visible sentence does not, and fluency is the test.** Read
   the sentence with the blank in place; if it does not read as English, the hint is wrong.
   `The {{c1::<b>A</b>::which band?}} <b>band</b>` gives *"the [which band?] band is dark"* — the
@@ -318,9 +340,9 @@ the card turned on, and neither half is visible until someone reads the rendered
   `A {{c1::<b>muscle fascicle</b>::what?}} bundles skeletal muscle fibers…` reads cleanly. Where
   nothing names it, the hint must: `{{c1::<b>sarcolemma</b>::which membrane?}}`. **A hint that asks
   for nothing at all is not a hint** — `what else?` is the clearest failure. Otherwise a hint names the category (`which organelle?`),
-  prompts an action (`do what?`), offers an either/or (`raise or lower?`), asks for a definition
-  (`what is it?`), or asks a cause (`why?`, whose answer is a whole clause). A two-option hint is
-  *not* a leak; it makes recall fast.
+  prompts an action (`does what?`), offers an either/or (`raise or lower?`), or asks a cause
+  (`why?`, whose answer is a whole clause). A definition is a noun slot, so its hint is `what?`,
+  never `what is it?`. A two-option hint is *not* a leak; it makes recall fast.
 - **Hide each cloze in turn — by writing the front out, not by imagining it.** For every cloze of
   every card, produce the front as the student sees it, the blank as `[hint?]` and everything else
   visible, and answer two questions in a line each: *what is this front asking?* and *can anything
