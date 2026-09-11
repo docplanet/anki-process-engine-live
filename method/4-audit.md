@@ -44,7 +44,10 @@ the course as the dissenting party.
 siblings shown. Each front must read as English. Flag: a hint that repeats a noun already visible
 in the sentence; a hint that asks for nothing; a hint that is a question of its own rather than
 the slot's grammar (`what is it?`, `what happens?` — the front stops reading where they stand);
-a hint whose type mismatches its answer (`where?`
+a bare `what?` anywhere but after a definition's copula or in a frame only one kind of thing
+fits — name three other true answers to the front as it reads, and if you can, flag it ("E. coli
+has [what?]"); an absence clozed as its object instead of its polarity ("contain no [which
+sequences?]" where the fact is "do not contain introns"); a hint whose type mismatches its answer (`where?`
 answered by an enzyme); a set or a pair of alternatives whose hint does not say how many
 (`which two?`, not `which elements?`); a sibling cloze that gives the hidden one away; two cards in the deck that
 render the identical front with different answers. Then read the front as the triangle the

@@ -296,6 +296,19 @@ the card turned on, and neither half is visible until someone reads the rendered
 - **The hint must be the question you meant to ask.** If you are writing a hint to fit a blank you
   already chose, you clozed by word-type instead of by answer — technical nouns *look* like answers
   and the eye lands on them.
+- **An absence is asked as a polarity, never as its object.** "X has no Y", "X contains no Y",
+  "X lacks Y": the recall is *whether*, not *what* — nobody is ever asked "what do prokaryotic
+  transcripts lack?"; they are asked "do prokaryotic transcripts contain introns?". So Y stays
+  visible and the either/or is the answer, on ref-03's pattern with the either/or wearing `<i>`
+  because it is the value itself:
+
+  ```
+  {{c1::<b>Prokaryotic</b>::which?}} <b>gene transcripts</b> {{c2::<i>do not</i>::do or do not?}} contain introns
+  ```
+
+  *"Prokaryotic gene transcripts contain no [which sequences?]" shipped instead: a thousand-answer
+  front on a yes/no fact.* A two-option hint is the fast kind of recall, and it is the whole point
+  of a negative card.
 - Cloze the facet only when it is a **value to produce**: ref-03 clozes `lower` because *raise or
   lower* is the recall; ref-02 leaves `function` visible because it only names the aspect. An
   either/or is ref-03 **only when a separate value survives it** — otherwise mark the aspect noun
@@ -338,7 +351,16 @@ the card turned on, and neither half is visible until someone reads the rendered
 - Where the visible sentence already pins the kind of thing being named — a definition, or a frame
   only one kind of thing fits — a bare `what?` is fine and often best —
   `A {{c1::<b>muscle fascicle</b>::what?}} bundles skeletal muscle fibers…` reads cleanly. Where
-  nothing names it, the hint must: `{{c1::<b>sarcolemma</b>::which membrane?}}`. **A hint that asks
+  nothing names it, the hint must: `{{c1::<b>sarcolemma</b>::which membrane?}}`.
+- **A bare `what?` is allowed in exactly two places: after the copula of a definition, and in a
+  frame only one kind of thing fits.** After *has*, *contains*, *uses*, *makes*, *have no*, the
+  frame fits anything, and the hint has to name the kind: `has {{c2::<i>a single circular
+  chromosome</i>::what chromosome?}}`, `have no {{c2::<i>nuclear envelope</i>::which envelope?}}`.
+  The test is to name three other true answers to the front as it reads — *"E. coli has [what?]"*
+  has a thousand — and if you can, the hint is too wide and the card asks nothing in particular.
+  *"E. coli has [what?]" and "Prokaryotic cells have no [what?]" both shipped in one deck.* The
+  hint's job is to make the answer the only thing left to produce; a hint the student has to
+  guess the question from is a card that trains guessing. **A hint that asks
   for nothing at all is not a hint** — `what else?` is the clearest failure. Otherwise a hint names the category (`which organelle?`),
   prompts an action (`does what?`), offers an either/or (`raise or lower?`), or asks a cause
   (`why?`, whose answer is a whole clause). A definition is a noun slot, so its hint is `what?`,
