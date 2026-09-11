@@ -32,6 +32,15 @@ IMAGE                               | ANSWER            | source
 Decide **ref-06 or ref-07 once for the whole deck**, not per card, and write which at the top of
 the plan — step 3 explains the choice. A slide practical is ref-07.
 
+**A recognition component does not need a practical to exist.** A learning objective that says
+the exam will show a picture — *"when shown the chemical structure of part of a strand, say which
+bases are purines and whether the pentose is ribose or deoxyribose"*, *"identify from the
+figure…"* — is one, and its rows are `IMAGE | ANSWER` rows cut from the slide's own figures,
+sitting in the same plan as the fact rows. *A nucleic-acids deck wrote "no recognition component
+in this material" at the top of a 133-row plan while objective 5 asked, in those words, to be shown
+a structure and name its sugar and bases; the audit's largest finding was the cards that plan never
+had.* Before writing that line, read every objective for the phrasing.
+
 No markup. The entity will become the `<b>` subject, the aspect the `<u>` facet, the value the
 `<i>` answer — but that is step 3's problem. Here you decide only **what each card is about** and
 **which facts deserve one**.
