@@ -38,6 +38,11 @@ MEDIA_DIR = os.environ.get("ANKI_MEDIA", DEFAULT_MEDIA)
 
 # Body runs to the first "}}", so a cloze can never straddle into the next one.
 CLOZE = re.compile(r"\{\{c(\d+)::((?:(?!\}\})[\s\S])*)\}\}")
+# A hint that is a question of its own rather than the slot's grammar: it opens with a question
+# word and carries its own verb ("what is it?", "what happens?", "which is it?"). Substituted into
+# the blank the front stops reading; the slot form is "what?", "does what?", "why?". Thirty-two
+# live cards shipped this way, copied from a reference card that had it (method/3-cards.md).
+CLAUSE_HINT = re.compile(r"^(?:what|which|who|where|when|why|how)\b[\s\S]*\b(?:is|are|was|were|do|does|did|happen|happens|happened)\b", re.I)
 IMAGE_TAG = re.compile(r"<img\b[^>]*>")
 IMAGE_SRC = re.compile(r'''<img\b[^>]*\bsrc=["']([^"']+)["']''')
 
@@ -333,6 +338,8 @@ def check(note, check_media=True, transcript=None, inventory=None):
                 problems.append(f"c{number} hint does not end in '?': {hint!r}")
             elif "," in hint or len(hint.rstrip("?").split()) > 3:
                 problems.append(f"c{number} hint is not one to three words: {hint!r}")
+            elif CLAUSE_HINT.search(hint):
+                problems.append(f"c{number} hint is a sentence, not a slot: {hint!r}")
 
     if len(numbers) > 3:
         problems.append(f"{len(numbers)} cloze numbers; never more than three")

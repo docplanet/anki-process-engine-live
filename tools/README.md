@@ -120,7 +120,9 @@ On prose cards it also holds the line that judgment keeps sliding off: **the car
 answer** (a clause trailing the final cloze is content the blank never asked for — eleven cards in
 one deck shipped that way and parsed cleanly), no role tag wrapping a cloze (the rendered colour
 silently vanishes — see [`anki/README.md`](../anki/README.md)), hints one to three words ending in
-`?`, and no possessive outside the bolded subject. Subjects never clozed are *reported*, not
+`?` and shaped as a slot rather than a question of their own (`what is it?` and `what happens?`
+fail; `what?`, `does what?`, `why?` pass — thirty-two cards shipped the first way, copied from a
+reference card that had it), and no possessive outside the bolded subject. Subjects never clozed are *reported*, not
 failed — a visible subject is legal only with a defence, and a script cannot read a defence.
 
 **Two of its checks are about what the card claims, not how it is built.** Both exist because a
